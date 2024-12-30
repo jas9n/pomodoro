@@ -1,26 +1,28 @@
-import { useState } from "react";
-import api from "../api";
-import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
-import "../styles/Form.css";
+import { useState } from 'react';
+import api from '../api';
+import { useNavigate } from 'react-router-dom';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
+import '../styles/Form.css';
 
 function Form({ route, method }) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
-    const name = method === "login" ? "Login" : "Register";
+    const name = method === 'login' ? 'Login' : 'Register';
 
     const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
-        setErrorMessage(""); // Reset error message on new submit
+        setErrorMessage('');
+        setSuccessMessage('');
 
-        if (method !== "login" && password !== confirmPassword) {
-            setErrorMessage("Passwords do not match!");
+        if (method === 'register' && password !== confirmPassword) {
+            setErrorMessage('Passwords do not match!');
             setLoading(false);
             return;
         }
@@ -28,28 +30,31 @@ function Form({ route, method }) {
         try {
             const res = await api.post(route, { username, password });
 
-            if (method === "login") {
-                // Save tokens and navigate to homepage
+            if (res.status === 200 || res.status === 201) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                navigate("/");
+                if (method === 'register') {
+                    setSuccessMessage('Registration successful.');
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 2000);
+                } else {
+                    navigate('/'); 
+                }
             } else {
-                // Registration success - log in user directly
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                navigate("/"); // Redirect to homepage
+                setErrorMessage('An unexpected error occurred. Please try again.');
             }
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 401) {
-                    setErrorMessage("Incorrect password or unregistered user.");
-                } else if (error.response.status === 404) {
-                    setErrorMessage("User not registered. Please register first.");
+                    setErrorMessage('Incorrect password or unregistered user.');
+                } else if (error.response.status === 400) {
+                    setErrorMessage('Invalid registration details.');
                 } else {
-                    setErrorMessage("An unexpected error occurred. Please try again.");
+                    setErrorMessage('An unexpected error occurred. Please try again.');
                 }
             } else {
-                setErrorMessage("Unable to connect to the server. Please try again later.");
+                setErrorMessage('Unable to connect to the server. Please try again later.');
             }
         } finally {
             setLoading(false);
@@ -59,7 +64,6 @@ function Form({ route, method }) {
     return (
         <form onSubmit={handleSubmit} className="form-container">
             <h1>{name}</h1>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <input
                 className="form-input"
                 type="text"
@@ -74,7 +78,7 @@ function Form({ route, method }) {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
             />
-            {method !== "login" && (
+            {method !== 'login' && (
                 <input
                     className="form-input"
                     type="password"
@@ -83,9 +87,15 @@ function Form({ route, method }) {
                     placeholder="Confirm Password"
                 />
             )}
-            <button className="form-button" type="submit" disabled={loading}>
-                {loading ? "Loading..." : name}
-            </button>
+            <input 
+                className="form-button" 
+                type="submit" 
+                disabled={loading}
+                value={loading ? 'Loading...' : name}
+            />
+    
+            {errorMessage && <div className="message-box error-message">{errorMessage}</div>}
+            {successMessage && <div className="message-box success-message">{successMessage}</div>}
         </form>
     );
 }
