@@ -1,0 +1,15 @@
+.home {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-button {
+    position: fixed;
+    margin: 1rem 2rem;
+    top: 0;
+    right: 0;
+    text-decoration: none;
+    color: #000;
+}

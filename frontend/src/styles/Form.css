@@ -1,18 +1,18 @@
 .form-container {
-    width: 300px;
+    width: 20rem;
     margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
+    padding: 2rem;
+    /* border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
     text-align: center;
     position: relative;
+    margin-bottom: 3rem;
 }
 
-.form-container h1 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
+.form-container > p {
+    font-size: 32px;
+    margin-bottom: 1rem;
 }
 
 .form-input {
@@ -32,13 +32,13 @@
     border-radius: 4px;
     background-color: #007bff;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .form-button:hover {
-    background-color: #0056b3;
+    background-color: #0666d4;
 }
 
 .message-box {
@@ -60,3 +60,19 @@
     background-color: #d4edda;
     border: 1px solid #c3e6cb;
 }
+
+.swap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swap > p {
+    margin-right: 4px;
+}
+
+.signin {
+    text-decoration: none;
+    color: #007bff;
+}
+

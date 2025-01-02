@@ -1,0 +1,49 @@
+.clock {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 3rem;
+}
+
+.clock-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clock-select > div {
+    margin: 1rem;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* .clock-select > div:hover {
+    text-decoration: underline;
+} */
+
+.clock-select .active {
+    text-decoration: underline;
+}
+
+.timer {
+    text-align: center;
+    font-size: 5rem;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options > div {
+    margin: 1rem;
+    cursor: pointer;
+    display: inline-block;
+}
+
+
+/* .options > div:hover {
+    text-decoration: underline;
+} */

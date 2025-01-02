@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import api from '../api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 import '../styles/Form.css';
 
@@ -13,7 +13,7 @@ function Form({ route, method }) {
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
-    const name = method === 'login' ? 'Login' : 'Register';
+    const name = method === 'login' ? 'Log In' : 'Register';
 
     const handleSubmit = async (e) => {
         setLoading(true);
@@ -63,7 +63,7 @@ function Form({ route, method }) {
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <h1>{name}</h1>
+            <p>{name}</p>
             <input
                 className="form-input"
                 type="text"
@@ -78,7 +78,7 @@ function Form({ route, method }) {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
             />
-            {method !== 'login' && (
+            {method === 'register' && (
                 <input
                     className="form-input"
                     type="password"
@@ -96,6 +96,20 @@ function Form({ route, method }) {
     
             {errorMessage && <div className="message-box error-message">{errorMessage}</div>}
             {successMessage && <div className="message-box success-message">{successMessage}</div>}
+
+            {method === 'login' && (
+                <div className="swap">
+                    <p>Don't have an account?</p>
+                    <Link to="/register" className='signin'>Register here.</Link>
+                </div>
+            )}
+            {method === 'register' && (
+                <div className="swap">
+                    <p>Already have an account?</p>
+                    <Link to="/login" className='signin'>Log in.</Link>
+                </div>
+            )}
+
         </form>
     );
 }
