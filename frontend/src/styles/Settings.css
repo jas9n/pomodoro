@@ -2,11 +2,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 90vh;
 }
 
-.tab {
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30rem;
+}
 
+.btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30rem;
+    margin-top: 1rem;
 }
 
 .active {
@@ -19,7 +31,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 25rem;
 }
 
 .timer {

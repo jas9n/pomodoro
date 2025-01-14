@@ -15,7 +15,7 @@ function Settings() {
   return (
     <div className="settings">
     <Link className="home-button" to="/">Back</Link>
-
+      <div className='content'>
       <div className="list">
         <p 
           onClick={toggleTimer}
@@ -68,6 +68,11 @@ function Settings() {
         {activeTab === 'theme' && (
           <p>Theme Settings</p>
         )}
+      </div>
+      </div>
+      <div className='btns'>
+        <input type="button" value={'Reset All'} />
+        <input type="button" value={'Save Changes'} />
       </div>
     </div>
   );

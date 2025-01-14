@@ -8,7 +8,7 @@ function Form({ route, method }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [name, setName] = useState(''); // New state for the name field
+    const [name, setName] = useState(''); 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -32,7 +32,7 @@ function Form({ route, method }) {
             // Build the payload
             const payload = { username, password };
             if (method === 'register') {
-                payload.name = name; // Add name to the payload when registering
+                payload.name = name;
             }
 
             const res = await api.post(route, payload);
@@ -107,7 +107,7 @@ function Form({ route, method }) {
                 className="form-button" 
                 type="submit" 
                 disabled={loading}
-                value={loading ? 'Loading...' : name}
+                value={loading ? 'Loading...' : nameLabel}
             />
     
             {errorMessage && <div className="message-box error-message">{errorMessage}</div>}
