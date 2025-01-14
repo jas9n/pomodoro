@@ -6,7 +6,7 @@ import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import Settings from "./pages/Settings"
 import Stats from "./pages/Stats"
-import ProtectedRoute from "./components/ProtectedRoute"
+// import ProtectedRoute from "./components/Protected"
 import './styles/App.css'
 
 function Logout() {

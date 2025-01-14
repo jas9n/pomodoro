@@ -4,7 +4,7 @@ import api from '../api'
 import { REFRESH_TOKEN, ACCESS_TOKEN } from '../constants'
 import { useState, useEffect } from 'react'
 
-function ProtectedRoute({children}) {
+function Auth({children, allowed = false}) {
     const [isAuthorized, setIsAuthorized] = useState(null)
 
     useEffect(() => {
@@ -46,11 +46,11 @@ function ProtectedRoute({children}) {
         }
     }
 
-    if (isAuthorized === null) {
-        return <div>Loading...</div>
-    }
-
-    return isAuthorized ? children : <Navigate to='/login' />
+    // if (isAuthorized === null) {
+    //     return <div>Loading...</div>
+    // }
+    
+    return allowed ? (!isAuthorized ? children : null) : (isAuthorized ? children : null);
 }
 
-export default ProtectedRoute
+export default Auth

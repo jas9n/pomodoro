@@ -8,12 +8,13 @@ function Form({ route, method }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState(''); // New state for the name field
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
-    const name = method === 'login' ? 'Log In' : 'Register';
+    const nameLabel = method === 'login' ? 'Log In' : 'Register';
 
     const handleSubmit = async (e) => {
         setLoading(true);
@@ -28,7 +29,13 @@ function Form({ route, method }) {
         }
 
         try {
-            const res = await api.post(route, { username, password });
+            // Build the payload
+            const payload = { username, password };
+            if (method === 'register') {
+                payload.name = name; // Add name to the payload when registering
+            }
+
+            const res = await api.post(route, payload);
 
             if (res.status === 200 || res.status === 201) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
@@ -36,7 +43,7 @@ function Form({ route, method }) {
                 if (method === 'register') {
                     setSuccessMessage('Registration successful.');
                     setTimeout(() => {
-                        navigate('/');
+                        navigate('/login');
                     }, 2000);
                 } else {
                     navigate('/'); 
@@ -63,7 +70,7 @@ function Form({ route, method }) {
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <p>{name}</p>
+            <p>{nameLabel}</p>
             <input
                 className="form-input"
                 type="text"
@@ -71,6 +78,15 @@ function Form({ route, method }) {
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
             />
+            {method === 'register' && (
+                <input
+                    className="form-input"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Name"
+                />
+            )}
             <input
                 className="form-input"
                 type="password"

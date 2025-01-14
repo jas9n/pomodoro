@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 function Register() {
     return (
         <div className='home'>
-            <Link className="home-button" to="/">Home</Link>
+            <Link className="home-button" to="/">Back</Link>
             <Form route="/api/user/register/" method="register"/>
         </div>
     

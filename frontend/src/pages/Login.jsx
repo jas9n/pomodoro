@@ -6,10 +6,9 @@ import { Link } from 'react-router-dom'
 function Login() {
     return (
         <div className='home'>
-            <Link className="home-button" to="/">Home</Link>
+            <Link className="home-button" to="/">Back</Link>
             <Form route="/api/token/" method="login" />
         </div>
-    
     )
 }
 

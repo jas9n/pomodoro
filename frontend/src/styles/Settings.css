@@ -1,0 +1,48 @@
+.settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.tab {
+
+}
+
+.active {
+    text-decoration: underline;
+}
+
+.display {
+    margin: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 25rem;
+}
+
+.timer {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+.timer > div {
+    display: flex;
+    flex-direction: column;
+    margin: 0 1rem;
+}
+
+.timer > div > p {
+    font-size: 1rem;
+}
+
+.timer > div > input {
+    width: 4.5rem;
+}
+
