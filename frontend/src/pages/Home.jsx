@@ -1,39 +1,41 @@
-import { useState, useEffect } from "react"
-import api from '../api'
-import Clock from '../components/Clock'
-import Navbar from '../components/Navbar'
-import Auth from '../components/Auth'
-import '../styles/Home.css'
+import { useState, useEffect, useContext } from "react";
+import api from '../api'; // Correctly import the api instance
+import Clock from '../components/Clock';
+import Navbar from '../components/Navbar';
+import { Authenticated } from '../components/AuthWrappers';
+import { AuthContext } from '../contexts/AuthContext'; // Import AuthContext
+import '../styles/Home.css';
 
 function Home() {
     const [name, setName] = useState("");
+    const { isAuthorized } = useContext(AuthContext); // Access authentication state
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await api.get('/api/user/'); // Adjust endpoint as needed
+                const res = await api.get('/api/user/');
                 if (res.status === 200) {
-                    setName(res.data.name || res.data.username || 'User'); // Use name or fallback to username
+                    setName(res.data.name || res.data.username);
                 }
             } catch (error) {
-                console.error("Error fetching user data:", error);
+                console.error('Error fetching user:', error);
             }
         };
 
-        fetchUser();
-    }, []);
+        if (isAuthorized) {
+            fetchUser(); // Fetch data only if authenticated
+        }
+    }, [isAuthorized]); // Re-run the effect if authentication state changes
 
     return (
         <div className="home">
             <Navbar />
-            <Auth>
-                <p>
-                    Hello, {name}
-                </p>
-            </Auth>
+            <Authenticated>
+                <p>Hello, {name || 'User'}</p>
+            </Authenticated>
             <Clock />
         </div>
-    )
+    );
 }
 
-export default Home
+export default Home;

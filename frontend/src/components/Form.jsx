@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import api from '../api';
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext'; 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 import '../styles/Form.css';
 
@@ -8,11 +9,12 @@ function Form({ route, method }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [name, setName] = useState(''); 
+    const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const nameLabel = method === 'login' ? 'Log In' : 'Register';
 
@@ -29,7 +31,6 @@ function Form({ route, method }) {
         }
 
         try {
-            // Build the payload
             const payload = { username, password };
             if (method === 'register') {
                 payload.name = name;
@@ -38,15 +39,12 @@ function Form({ route, method }) {
             const res = await api.post(route, payload);
 
             if (res.status === 200 || res.status === 201) {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                login(res.data.access, res.data.refresh); // Update state on login
                 if (method === 'register') {
                     setSuccessMessage('Registration successful.');
-                    setTimeout(() => {
-                        navigate('/login');
-                    }, 2000);
+                    setTimeout(() => navigate('/'), 2000);
                 } else {
-                    navigate('/'); 
+                    navigate('/');
                 }
             } else {
                 setErrorMessage('An unexpected error occurred. Please try again.');
@@ -103,12 +101,13 @@ function Form({ route, method }) {
                     placeholder="Confirm Password"
                 />
             )}
-            <input 
-                className="form-button" 
-                type="submit" 
+            <button
+                className="form-button"
+                type="submit"
                 disabled={loading}
-                value={loading ? 'Loading...' : nameLabel}
-            />
+            >
+                {loading ? 'Loading...' : nameLabel}
+            </button>
     
             {errorMessage && <div className="message-box error-message">{errorMessage}</div>}
             {successMessage && <div className="message-box success-message">{successMessage}</div>}

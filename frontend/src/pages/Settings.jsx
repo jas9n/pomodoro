@@ -71,8 +71,8 @@ function Settings() {
       </div>
       </div>
       <div className='btns'>
-        <input type="button" value={'Reset All'} />
-        <input type="button" value={'Save Changes'} />
+        <button>Reset All</button>
+        <button>Save Changes</button>
       </div>
     </div>
   );

@@ -1,20 +1,23 @@
-import Auth from "../components/Auth"
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Authenticated, NotAuthenticated } from '../components/AuthWrappers';
 
-import '../styles/Stats.css'
+import '../styles/Stats.css';
 
 function Stats() {
     return (
         <div className="stats">
             <Link className="home-button" to="/">Back</Link>
-            <Auth>
-                These are your analytics.
-            </Auth>
-            <Auth allowed>
-                Analytics will be available when you are logged in.
-            </Auth>
+            
+            <Authenticated>
+                <p>These are your analytics.</p>
+            </Authenticated>
+
+            <NotAuthenticated>
+                <p>Analytics will be available when you are logged in.</p>
+            </NotAuthenticated>
         </div>
-    )
+    );
 }
 
-export default Stats
+export default Stats;
