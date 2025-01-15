@@ -50,6 +50,7 @@ h3 {
 }
 
 .timer > div > p {
+    margin-bottom: 0.5rem;
     font-size: 1rem;
 }
 

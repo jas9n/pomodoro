@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
-
+import { useTheme } from '../contexts/ThemeContext';
 import '../styles/Settings.css';
 
 function Settings() {
   const [activeTab, setActiveTab] = useState('timer');
 
-  const toggleTimer = () => setActiveTab('timer');
-  const toggleSound = () => setActiveTab('sound');
+  const toggleTimers = () => setActiveTab('timer');
+  const toggleSounds = () => setActiveTab('sound');
   const toggleTasks = () => setActiveTab('tasks');
-  const toggleTheme = () => setActiveTab('theme');
+  const toggleThemes = () => setActiveTab('theme');
+
+  const { theme, toggleGlobalTheme } = useTheme();
 
   return (
     <div className="settings">
@@ -17,13 +19,13 @@ function Settings() {
       <div className='content'>
       <div className="list">
         <p 
-          onClick={toggleTimer}
+          onClick={toggleTimers}
           className={`tab ${activeTab === 'timer' ? 'active' : ''}`}
         >
           Timers
         </p>
         <p 
-          onClick={toggleSound}
+          onClick={toggleSounds}
           className={`tab ${activeTab === 'sound' ? 'active' : ''}`}
         >
           Sounds
@@ -35,7 +37,7 @@ function Settings() {
           Tasks
         </p>
         <p 
-          onClick={toggleTheme}
+          onClick={toggleThemes}
           className={`tab ${activeTab === 'theme' ? 'active' : ''}`}
         >
           Theme
@@ -65,7 +67,9 @@ function Settings() {
           <p>Task Settings</p>
         )}
         {activeTab === 'theme' && (
-          <p>Theme Settings</p>
+          <button onClick={toggleGlobalTheme}>
+            Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+          </button>
         )}
       </div>
       </div>

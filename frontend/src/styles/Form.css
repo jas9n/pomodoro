@@ -1,5 +1,5 @@
 .form-container {
-    width: 20rem;
+    width: 22rem;
     margin: 0 auto;
     padding: 2rem;
     /* border: 1px solid #ccc;
@@ -68,10 +68,12 @@
 }
 
 .swap > p {
+    margin-top: 1rem;
     margin-right: 4px;
 }
 
 .signin {
+    margin-top: 1rem;
     text-decoration: none;
     color: #007bff;
 }

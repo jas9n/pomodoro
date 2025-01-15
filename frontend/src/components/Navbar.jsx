@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import '../styles/Navbar.css';
 
 function Navbar() {
@@ -15,6 +16,8 @@ function Navbar() {
     const handleLogin = () => {
         navigate('/login');
     };
+
+    const { theme } = useTheme();
 
     return (
         <nav>

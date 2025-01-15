@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import Stats from "./pages/Stats";
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import './styles/App.css';
 
 function Logout() {
@@ -14,9 +15,9 @@ function Logout() {
   return <Navigate to="/" />;
 }
 
-function App() {
+function AppContent() {
+
   return (
-    <AuthProvider>
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
@@ -29,6 +30,15 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
     </AuthProvider>
   );
 }

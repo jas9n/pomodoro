@@ -1,7 +1,53 @@
-body {
-    font-family: 'Times New Roman', Times, serif;
-}
+/* styles/App.css */
 
-input {
-    font-family: 'Times New Roman', Times, serif;
-}
+/* Reset Default Browser Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Ensure Full-Height Coverage */
+  html, body, #root {
+    height: 100%;
+  }
+  
+  /* Theme Styles */
+  .light {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .light a {
+    color: #000; /* Blue link for light theme */
+    text-decoration: none;
+  }
+  
+  .light a:hover {
+    text-decoration: underline;
+  }
+
+  .light input {
+    border: 1px solid #ccc;
+  }
+  
+  .dark {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  .dark a {
+    color: #fff; /* Yellow link for dark theme */
+    text-decoration: none;
+  }
+  
+  .dark a:hover {
+    text-decoration: underline;
+  }  
+
+  .dark input {
+    border: 1px solid #ccc;
+    background-color: #1a1a1a;
+    color: #ccc;
+  }
+  
