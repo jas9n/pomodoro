@@ -13,12 +13,8 @@
     width: 30rem;
 }
 
-.btns {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 30rem;
-    margin-top: 1rem;
+.tab {
+    cursor: pointer;
 }
 
 .active {
@@ -29,8 +25,10 @@
     margin: 0 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+    /* width: 20rem; */
+    /* background-color: aliceblue; */
 }
 
 .timer {
@@ -45,8 +43,10 @@ h3 {
 
 .timer > div {
     display: flex;
+    justify-self: center;
+    align-items: center;
     flex-direction: column;
-    margin: 0 1rem;
+    margin-left: 2rem;
 }
 
 .timer > div > p {
@@ -57,3 +57,14 @@ h3 {
     width: 4.5rem;
 }
 
+.btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30rem;
+    margin-top: 2rem;
+}
+
+button {
+    margin-right: 2rem;
+}

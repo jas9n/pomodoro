@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import '../styles/Settings.css';
 
 function Settings() {
-  // Use individual state variables for each setting
   const [activeTab, setActiveTab] = useState('timer');
 
   const toggleTimer = () => setActiveTab('timer');
@@ -21,13 +20,13 @@ function Settings() {
           onClick={toggleTimer}
           className={`tab ${activeTab === 'timer' ? 'active' : ''}`}
         >
-          Timer
+          Timers
         </p>
         <p 
           onClick={toggleSound}
           className={`tab ${activeTab === 'sound' ? 'active' : ''}`}
         >
-          Sound
+          Sounds
         </p>
         <p 
           onClick={toggleTasks}
@@ -71,7 +70,7 @@ function Settings() {
       </div>
       </div>
       <div className='btns'>
-        <button>Reset All</button>
+        <button>Restore Default</button>
         <button>Save Changes</button>
       </div>
     </div>
