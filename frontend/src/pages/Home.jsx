@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
-import api from '../api'; // Correctly import the api instance
+import api from '../api';
 import Clock from '../components/Clock';
 import Navbar from '../components/Navbar';
 import { Authenticated } from '../components/AuthWrappers';
-import { AuthContext } from '../contexts/AuthContext'; // Import AuthContext
+import { AuthContext } from '../contexts/AuthContext'; 
 import '../styles/Home.css';
 
 function Home() {
     const [name, setName] = useState("");
-    const { isAuthorized } = useContext(AuthContext); // Access authentication state
+    const { isAuthorized } = useContext(AuthContext); 
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -23,9 +23,9 @@ function Home() {
         };
 
         if (isAuthorized) {
-            fetchUser(); // Fetch data only if authenticated
+            fetchUser(); 
         }
-    }, [isAuthorized]); // Re-run the effect if authentication state changes
+    }, [isAuthorized]); 
 
     return (
         <div className="home">

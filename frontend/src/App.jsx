@@ -7,7 +7,8 @@ import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import Stats from "./pages/Stats";
 import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { TimerProvider } from "./contexts/TimerContext";
 import './styles/App.css';
 
 function Logout() {
@@ -22,12 +23,12 @@ function AppContent() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
   );
@@ -37,7 +38,9 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <AppContent />
+        <TimerProvider>
+          <AppContent />
+        </TimerProvider>
       </ThemeProvider>
     </AuthProvider>
   );

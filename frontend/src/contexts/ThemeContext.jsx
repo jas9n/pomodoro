@@ -1,28 +1,23 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
-// Create Theme Context
 const ThemeContext = createContext();
 
-// Custom Hook to Access Theme
 export const useTheme = () => useContext(ThemeContext);
 
-// Theme Provider
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light'); // Default: Light theme
+  const [theme, setTheme] = useState('light'); 
 
-  // Load saved theme from localStorage on initialization
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light'; // Default to 'light' if none is saved
+    const savedTheme = localStorage.getItem('theme') || 'light'; 
     setTheme(savedTheme);
-    document.body.className = savedTheme; // Apply theme class to body
+    document.body.className = savedTheme; 
   }, []);
 
-  // Function to toggle the theme
   const toggleGlobalTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme); // Save the new theme to localStorage
-    document.body.className = newTheme; // Apply theme class to body
+    localStorage.setItem('theme', newTheme); 
+    document.body.className = newTheme; 
   };
 
   return (

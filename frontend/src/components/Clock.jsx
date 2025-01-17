@@ -1,20 +1,24 @@
 import { useState, useRef } from "react";
+import { useTimer } from "../contexts/TimerContext"; // Import PomodoroContext
 import "../styles/Clock.css";
 
 function Clock() {
-    const [time, setTime] = useState(25 * 60); 
-    const [isPaused, setIsPaused] = useState(true); 
-    const [activeTimer, setActiveTimer] = useState("pomodoro"); 
-    const intervalId = useRef(null); 
+    const { timers } = useTimer(); // Access timer durations from context
+    const [time, setTime] = useState(timers.pomodoro * 60); // Default to work timer
+    const [isPaused, setIsPaused] = useState(true);
+    const [activeTimer, setActiveTimer] = useState("pomodoro"); // Current active timer
+    const intervalId = useRef(null);
 
+    // Format time as mm:ss
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes < 10 ? "0" : ""}${minutes}:${secs < 10 ? "0" : ""}${secs}`;
     };
 
+    // Start the timer
     const startTimer = () => {
-        if (!isPaused) return; 
+        if (!isPaused) return;
         setIsPaused(false);
 
         intervalId.current = setInterval(() => {
@@ -29,34 +33,37 @@ function Clock() {
         }, 1000);
     };
 
+    // Pause the timer
     const pauseTimer = () => {
         clearInterval(intervalId.current);
         setIsPaused(true);
     };
 
+    // Reset the timer to its initial value based on the active timer
     const resetTimer = () => {
         clearInterval(intervalId.current);
         setIsPaused(true);
         if (activeTimer === "pomodoro") {
-            setTime(25 * 60);
+            setTime(timers.pomodoro * 60); // Use work time from context
         } else if (activeTimer === "short-break") {
-            setTime(5 * 60);
+            setTime(timers.shortBreak * 60); // Use short break time from context
         } else if (activeTimer === "long-break") {
-            setTime(10 * 60);
+            setTime(timers.longBreak * 60); // Use long break time from context
         }
     };
 
+    // Switch the timer type and reset the time
     const switchTimer = (timerType) => {
         clearInterval(intervalId.current);
         setIsPaused(true);
         setActiveTimer(timerType);
 
         if (timerType === "pomodoro") {
-            setTime(25 * 60);
+            setTime(timers.pomodoro * 60); // Use work time from context
         } else if (timerType === "short-break") {
-            setTime(5 * 60);
+            setTime(timers.shortBreak * 60); // Use short break time from context
         } else if (timerType === "long-break") {
-            setTime(10 * 60);
+            setTime(timers.longBreak * 60); // Use long break time from context
         }
     };
 
