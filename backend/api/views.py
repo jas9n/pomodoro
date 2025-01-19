@@ -19,5 +19,25 @@ class CurrentUserView(APIView):
         user = request.user
         return Response({
             "username": user.username,
-            "name": getattr(user, 'name', user.username),  # Handle cases where 'name' might not exist
+            "name": getattr(user, 'name', user.username),  
+            "preferences": user.preferences,
         })
+    
+    def put(self, request):
+        user = request.user
+        preferences = request.data.get('preferences')
+
+        # Validate preferences structure if needed
+        if preferences and isinstance(preferences, dict):
+            user.preferences = preferences
+            user.save()
+            return Response({
+                "message": "Preferences updated successfully.",
+                "preferences": user.preferences,
+            }, status=200)
+        
+        return Response({
+            "message": "Invalid preferences data."
+        }, status=400)
+
+

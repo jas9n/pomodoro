@@ -14,3 +14,4 @@ class UserSerializer(serializers.ModelSerializer):
             user.name = name
             user.save()
         return user
+    

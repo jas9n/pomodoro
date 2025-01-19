@@ -69,3 +69,18 @@ h3 {
 button {
     margin-right: 2rem;
 }
+
+.status-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+}
+
+.status-message.error {
+    color: red;
+}
+
+.save-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
