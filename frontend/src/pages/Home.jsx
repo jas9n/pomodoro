@@ -28,7 +28,6 @@ function Home() {
     fetchUser();
   }, [isAuthorized]);
 
-  // Show loading if either `AuthContext` or `TimerContext` is still loading
   if (authLoading || timerLoading) {
     return (
       <div className="home">
@@ -38,7 +37,6 @@ function Home() {
     );
   }
 
-  // Display timers for both logged-in and logged-out users
   return (
     <div className="home">
       <Navbar />

@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     if (!refreshToken) {
       logout();
+      setLoading(false);
       return;
     }
 
@@ -28,34 +29,38 @@ export const AuthProvider = ({ children }) => {
       console.error('Error refreshing token:', error);
       logout();
     }
+    setLoading(false);
   };
 
   const checkAuth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
     if (!token) {
       logout();
+      setLoading(false);
       return;
     }
 
     try {
       const decoded = jwtDecode(token);
-      const now = Date.now() / 1000; // Convert to seconds
+      const now = Date.now() / 1000;
       if (decoded.exp < now) {
         await refreshToken();
       } else {
         setIsAuthorized(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error decoding token or invalid token:', error);
       logout();
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const login = (accessToken, refreshToken) => {
     localStorage.setItem(ACCESS_TOKEN, accessToken);
     localStorage.setItem(REFRESH_TOKEN, refreshToken);
     setIsAuthorized(true);
+    setLoading(false);
   };
 
   const logout = () => {

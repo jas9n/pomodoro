@@ -9,29 +9,63 @@ import '../styles/Settings.css';
 function Settings() {
   const [activeTab, setActiveTab] = useState('timer');
   const [statusMessage, setStatusMessage] = useState('');
-  const { timers, updateTimers, resetToDefaults, loading } = useTimer(); // Include loading
+  const { timers, updateTimers, resetToDefaults, loading } = useTimer();
   const { theme, toggleGlobalTheme } = useTheme();
   const { isAuthorized } = useContext(AuthContext);
 
-  const [pomodoro, setPomodoro] = useState(timers.pomodoro);
-  const [shortBreak, setShortBreak] = useState(timers.shortBreak);
-  const [longBreak, setLongBreak] = useState(timers.longBreak);
+  // Use string state to allow empty values during editing
+  const [inputValues, setInputValues] = useState({
+    pomodoro: timers.pomodoro.toString(),
+    shortBreak: timers.shortBreak.toString(),
+    longBreak: timers.longBreak.toString(),
+  });
 
   useEffect(() => {
     if (!loading) {
-      // Sync local state with TimerContext after loading
-      setPomodoro(timers.pomodoro);
-      setShortBreak(timers.shortBreak);
-      setLongBreak(timers.longBreak);
+      setInputValues({
+        pomodoro: timers.pomodoro.toString(),
+        shortBreak: timers.shortBreak.toString(),
+        longBreak: timers.longBreak.toString(),
+      });
     }
   }, [loading, timers]);
 
-  const handleUpdate = (key, value) => {
-    const val = Math.max(1, Math.min(60, Number(value)));
-    updateTimers({ [key]: val });
-    if (key === 'pomodoro') setPomodoro(val);
-    if (key === 'shortBreak') setShortBreak(val);
-    if (key === 'longBreak') setLongBreak(val);
+  const handleInputChange = (key, value) => {
+    // Allow empty string or numbers only
+    if (value === '' || /^\d*$/.test(value)) {
+      setInputValues(prev => ({
+        ...prev,
+        [key]: value
+      }));
+
+      // Only update timer context if we have a valid number
+      if (value !== '') {
+        const numValue = parseInt(value, 10);
+        if (!isNaN(numValue)) {
+          const validValue = Math.max(1, Math.min(60, numValue));
+          updateTimers({ [key]: validValue });
+        }
+      }
+    }
+  };
+
+  const handleInputBlur = (key) => {
+    const value = inputValues[key];
+    let finalValue;
+
+    if (value === '' || isNaN(parseInt(value, 10))) {
+      // If empty or invalid, reset to default
+      finalValue = key === 'pomodoro' ? '25' : key === 'shortBreak' ? '5' : '10';
+    } else {
+      // Ensure value is within bounds
+      finalValue = Math.max(1, Math.min(60, parseInt(value, 10))).toString();
+    }
+
+    setInputValues(prev => ({
+      ...prev,
+      [key]: finalValue
+    }));
+    updateTimers({ [key]: parseInt(finalValue, 10) });
   };
 
   const handleSave = async () => {
@@ -41,23 +75,21 @@ function Settings() {
     }
 
     try {
-      // Save preferences via API
       await api.put('/api/user/', {
         preferences: {
           timers: {
-            pomodoro,
-            shortBreak,
-            longBreak,
+            pomodoro: parseInt(inputValues.pomodoro, 10),
+            shortBreak: parseInt(inputValues.shortBreak, 10),
+            longBreak: parseInt(inputValues.longBreak, 10),
           },
         },
       });
 
-      // Fetch updated preferences to sync with TimerContext
       const response = await api.get('/api/user/');
       const updatedPreferences = response.data.preferences?.timers;
 
       if (updatedPreferences) {
-        updateTimers(updatedPreferences); // Sync preferences with TimerContext
+        updateTimers(updatedPreferences);
         setStatusMessage('Preferences saved and updated successfully!');
       } else {
         setStatusMessage('Preferences saved, but could not fetch updated preferences.');
@@ -73,15 +105,18 @@ function Settings() {
   };
 
   const handleRestoreDefault = () => {
-    resetToDefaults(); // Reset timers in TimerContext
-    setPomodoro(25); // Reset local state
-    setShortBreak(5);
-    setLongBreak(10);
+    const defaults = {
+      pomodoro: '25',
+      shortBreak: '5',
+      longBreak: '10'
+    };
+    setInputValues(defaults);
+    resetToDefaults();
     setStatusMessage('Default settings restored.');
   };
 
   if (loading) {
-    return <p>Loading...</p>; // Show loading message
+    return <p>Loading...</p>;
   }
 
   return (
@@ -99,15 +134,36 @@ function Settings() {
             <div className="timer">
               <div>
                 <p>Pomodoro</p>
-                <input type="number" value={pomodoro} min="1" max="60" onChange={(e) => handleUpdate('pomodoro', e.target.value)} />
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={inputValues.pomodoro}
+                  onChange={(e) => handleInputChange('pomodoro', e.target.value)}
+                  onBlur={() => handleInputBlur('pomodoro')}
+                  placeholder="25"
+                />
               </div>
               <div>
                 <p>Short Break</p>
-                <input type="number" value={shortBreak} min="1" max="60" onChange={(e) => handleUpdate('shortBreak', e.target.value)} />
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={inputValues.shortBreak}
+                  onChange={(e) => handleInputChange('shortBreak', e.target.value)}
+                  onBlur={() => handleInputBlur('shortBreak')}
+                  placeholder="5"
+                />
               </div>
               <div>
                 <p>Long Break</p>
-                <input type="number" value={longBreak} min="1" max="60" onChange={(e) => handleUpdate('longBreak', e.target.value)} />
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={inputValues.longBreak}
+                  onChange={(e) => handleInputChange('longBreak', e.target.value)}
+                  onBlur={() => handleInputBlur('longBreak')}
+                  placeholder="10"
+                />
               </div>
             </div>
           )}
