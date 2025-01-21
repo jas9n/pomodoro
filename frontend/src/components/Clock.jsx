@@ -1,22 +1,70 @@
-import { useState, useRef } from "react";
-import { useTimer } from "../contexts/TimerContext"; // Import PomodoroContext
+import { useState, useRef, useEffect } from "react";
+import { useTimer } from "../contexts/TimerContext"; 
+import api from "../api";
 import "../styles/Clock.css";
 
-function Clock() {
-    const { timers } = useTimer(); // Access timer durations from context
-    const [time, setTime] = useState(timers.pomodoro * 60); // Default to work timer
-    const [isPaused, setIsPaused] = useState(true);
-    const [activeTimer, setActiveTimer] = useState("pomodoro"); // Current active timer
-    const intervalId = useRef(null);
+import alarmSound from '../assets/sounds/alarm.mp3';
+import chimeSound from '../assets/sounds/chime.mp3';
+import cuckoSound from '../assets/sounds/cuckoo.mp3';
+import vibraSound from '../assets/sounds/vibrate.mp3';
 
-    // Format time as mm:ss
+const SOUNDS = {
+  'alarm': alarmSound,
+  'chime': chimeSound,
+  'cuckoo': cuckoSound,
+  'vibrate': vibraSound
+};
+
+function Clock() {
+    const { timers, soundSettings } = useTimer();
+    const [time, setTime] = useState(timers.pomodoro * 60);
+    const [isPaused, setIsPaused] = useState(true);
+    const [activeTimer, setActiveTimer] = useState("pomodoro");
+    const intervalId = useRef(null);
+    const alarmSound = useRef(null);
+
+    useEffect(() => {
+        const soundSrc = SOUNDS[soundSettings.selectedSound] || SOUNDS['alarm'];
+        alarmSound.current = new Audio(soundSrc);
+        alarmSound.current.volume = soundSettings.isMuted ? 0 : soundSettings.volume / 100;
+
+        return () => {
+            if (alarmSound.current) {
+                alarmSound.current.pause();
+                alarmSound.current = null;
+            }
+        };
+    }, [soundSettings.selectedSound]);
+
+    useEffect(() => {
+        if (alarmSound.current) {
+            alarmSound.current.volume = soundSettings.isMuted ? 0 : soundSettings.volume / 100;
+        }
+    }, [soundSettings.volume, soundSettings.isMuted]);
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes < 10 ? "0" : ""}${minutes}:${secs < 10 ? "0" : ""}${secs}`;
     };
 
-    // Start the timer
+    const playAlarm = () => {
+        if (alarmSound.current) {
+            alarmSound.current.currentTime = 0; 
+            alarmSound.current.play();
+        }
+
+        if (activeTimer === "pomodoro") {
+            api.post('api/user/analytics/', { study_time: timers.pomodoro })
+                .then(response => {
+                    console.log("Study time updated:", response.data);
+                })
+                .catch(error => {
+                    console.error("Failed to update analytics:", error);
+                });
+        }
+    }; 
+
     const startTimer = () => {
         if (!isPaused) return;
         setIsPaused(false);
@@ -26,6 +74,7 @@ function Clock() {
                 if (prevTime <= 1) {
                     clearInterval(intervalId.current);
                     setIsPaused(true);
+                    playAlarm();
                     return 0;
                 }
                 return prevTime - 1;
@@ -33,22 +82,20 @@ function Clock() {
         }, 1000);
     };
 
-    // Pause the timer
     const pauseTimer = () => {
         clearInterval(intervalId.current);
         setIsPaused(true);
     };
 
-    // Reset the timer to its initial value based on the active timer
     const resetTimer = () => {
         clearInterval(intervalId.current);
         setIsPaused(true);
         if (activeTimer === "pomodoro") {
-            setTime(timers.pomodoro * 60); // Use work time from context
+            setTime(timers.pomodoro * 60);
         } else if (activeTimer === "short-break") {
-            setTime(timers.shortBreak * 60); // Use short break time from context
+            setTime(timers.shortBreak * 60); 
         } else if (activeTimer === "long-break") {
-            setTime(timers.longBreak * 60); // Use long break time from context
+            setTime(timers.longBreak * 60); 
         }
     };
 

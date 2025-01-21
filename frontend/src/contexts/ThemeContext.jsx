@@ -1,22 +1,16 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useContext } from 'react';
+import { useTimer } from './TimerContext'; 
 
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light'); 
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light'; 
-    setTheme(savedTheme);
-    document.body.className = savedTheme; 
-  }, []);
+  const { theme, setTheme } = useTimer(); 
 
   const toggleGlobalTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme); 
+    setTheme(newTheme); 
     document.body.className = newTheme; 
   };
 

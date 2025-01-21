@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
 from .models import CustomUser
 from .serializers import UserSerializer
+from datetime import date
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -27,17 +28,61 @@ class CurrentUserView(APIView):
         user = request.user
         preferences = request.data.get('preferences')
 
-        # Validate preferences structure if needed
         if preferences and isinstance(preferences, dict):
-            user.preferences = preferences
+            timers = preferences.get('timers')
+            sound = preferences.get('sound')
+            theme = preferences.get('theme')
+
+            if timers and isinstance(timers, dict):
+                user.preferences['timers'] = timers
+
+            if sound and isinstance(sound, dict):
+                user.preferences['sound'] = sound
+
+            if theme and isinstance(theme, str):
+                user.preferences['theme'] = theme
+
             user.save()
+
             return Response({
                 "message": "Preferences updated successfully.",
                 "preferences": user.preferences,
             }, status=200)
-        
+
         return Response({
             "message": "Invalid preferences data."
         }, status=400)
 
 
+class AnalyticsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        study_time = user.study_time 
+        days_logged = len(user.days_logged)  
+
+        return Response({
+            "study_time": study_time,
+            "days_logged": days_logged,
+        })
+
+    def post(self, request):
+        user = request.user
+
+        study_time = request.data.get("study_time", 0)
+        if isinstance(study_time, int) and study_time > 0:
+            user.study_time += study_time
+
+        today = str(date.today())
+        if today not in user.days_logged:
+            user.days_logged.append(today)
+
+        user.save()
+
+        return Response({
+            "message": "Analytics updated successfully.",
+            "study_time": user.study_time,
+            "days_logged": len(user.days_logged),
+        }, status=200)

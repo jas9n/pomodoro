@@ -4,6 +4,8 @@ from django.db import models
 class CustomUser(AbstractUser):
     name = models.CharField(max_length=255, blank=True, null=True)
     preferences = models.JSONField(default=dict, blank=True)
+    study_time = models.PositiveIntegerField(default=0) 
+    days_logged = models.JSONField(default=list, blank=True)
 
     groups = models.ManyToManyField(
         Group,
