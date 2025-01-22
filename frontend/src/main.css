@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+:root {
+    --background-color: theme(colors.light.background);
+    --text-color: theme(colors.light.text);
+    --primary-color: theme(colors.light.primary);
+    --secondary-color: theme(colors.light.secondary);
+    --tertiary-color: theme(colors.light.tertiary);
+  }
+  
+  [data-theme="dark"] {
+    --background-color: theme(colors.dark.background);
+    --text-color: theme(colors.dark.text);
+    --primary-color: theme(colors.dark.primary);
+    --secondary-color: theme(colors.dark.secondary);
+    --tertiary-color: theme(colors.dark.tertiary);
+  }
+  
+  /* Apply custom properties in Tailwind */
+  .bg-background {
+    @apply bg-[var(--background-color)];
+  }
+  
+  .text-color {
+    @apply text-[var(--text-color)];
+  }
+
+  .fill-color {
+    @apply fill-[var(--text-color)];
+  }
+
+  .bg-primary {
+    @apply bg-[var(--primary-color)];
+  }
+
+  .bg-secondary {
+    @apply bg-[var(--secondary-color)];
+  }
+
+  .text-tertiary {
+    @apply text-[var(--tertiary-color)];
+  }

@@ -2,8 +2,6 @@ import { useState, useContext } from 'react';
 import api from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; 
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
-import '../styles/Form.css';
 
 function Form({ route, method }) {
     const [username, setUsername] = useState('');
@@ -25,7 +23,7 @@ function Form({ route, method }) {
         setSuccessMessage('');
 
         if (method === 'register' && password !== confirmPassword) {
-            setErrorMessage('Passwords do not match!');
+            setErrorMessage('Passwords do not match.');
             setLoading(false);
             return;
         }
@@ -39,10 +37,10 @@ function Form({ route, method }) {
             const res = await api.post(route, payload);
 
             if (res.status === 200 || res.status === 201) {
-                login(res.data.access, res.data.refresh); // Update state on login
+                login(res.data.access, res.data.refresh); 
                 if (method === 'register') {
                     setSuccessMessage('Registration successful.');
-                    setTimeout(() => navigate('/'), 2000);
+                    setTimeout(() => navigate('/login'), 2000);
                 } else {
                     navigate('/');
                 }
@@ -67,18 +65,18 @@ function Form({ route, method }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="form-container">
-            <p>{nameLabel}</p>
-            <input
-                className="form-input"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-[18rem] rounded-lg space-y-4 text-color">
+            <p className='text-3xl'>{nameLabel}</p>
+                <input
+                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                />
             {method === 'register' && (
                 <input
-                    className="form-input"
+                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -86,7 +84,7 @@ function Form({ route, method }) {
                 />
             )}
             <input
-                className="form-input"
+                className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,7 +92,7 @@ function Form({ route, method }) {
             />
             {method === 'register' && (
                 <input
-                    className="form-input"
+                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -102,26 +100,26 @@ function Form({ route, method }) {
                 />
             )}
             <button
-                className="form-button"
+                className="w-full py-2.5 rounded-md bg-blue-500 text-white transition hover:bg-blue-400"
                 type="submit"
                 disabled={loading}
             >
                 {loading ? 'Loading...' : nameLabel}
             </button>
     
-            {errorMessage && <div className="message-box error-message">{errorMessage}</div>}
-            {successMessage && <div className="message-box success-message">{successMessage}</div>}
+            {errorMessage && <div className="fixed top-12 bg-red-100 text-red-800 px-4 py-2 rounded-md">{errorMessage}</div>}
+            {successMessage && <div className="fixed top-12 bg-green-100 text-green-800 px-4 py-2 rounded-md">{successMessage}</div>}
 
             {method === 'login' && (
-                <div className="swap">
+                <div className="flex space-x-1.5">
                     <p>Don't have an account?</p>
-                    <Link to="/register" className='signin'>Register here.</Link>
+                    <Link to="/register" className='text-blue-500'>Register here.</Link>
                 </div>
             )}
             {method === 'register' && (
-                <div className="swap">
+                <div className="flex space-x-1.5">
                     <p>Already have an account?</p>
-                    <Link to="/login" className='signin'>Log in.</Link>
+                    <Link to="/login" className='text-blue-500'>Log in.</Link>
                 </div>
             )}
 

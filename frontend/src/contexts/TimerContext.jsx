@@ -19,11 +19,11 @@ export const TimerProvider = ({ children }) => {
     isMuted: false,
   };
 
-  const defaultTheme = 'light'; 
+  const defaultTheme = 'light';
 
   const [timers, setTimers] = useState(defaultTimers);
   const [soundSettings, setSoundSettings] = useState(defaultSoundSettings);
-  const [theme, setTheme] = useState(defaultTheme); 
+  const [theme, setTheme] = useState(defaultTheme);
   const [loading, setLoading] = useState(true);
 
   const { isAuthorized, loading: authLoading } = useContext(AuthContext);
@@ -36,7 +36,8 @@ export const TimerProvider = ({ children }) => {
     if (!isAuthorized) {
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
-      setTheme(defaultTheme); 
+      setTheme(defaultTheme);
+      document.documentElement.setAttribute('data-theme', defaultTheme);
       setLoading(false);
       return;
     }
@@ -59,11 +60,10 @@ export const TimerProvider = ({ children }) => {
 
       if (userPreferences?.theme) {
         setTheme(userPreferences.theme);
-        document.body.className = userPreferences.theme;
+        document.documentElement.setAttribute('data-theme', userPreferences.theme);
       } else {
         setTheme(defaultTheme);
       }
-
     } catch (error) {
       console.error('Failed to fetch preferences:', error);
       setTimers(defaultTimers);
@@ -78,8 +78,7 @@ export const TimerProvider = ({ children }) => {
     setTimers(defaultTimers);
     setSoundSettings(defaultSoundSettings);
     setTheme(defaultTheme);
-    document.body.className = defaultTheme;
-    localStorage.removeItem('userPreferences');
+    document.documentElement.setAttribute('data-theme', defaultTheme);
   };
 
   const updateTimers = (newTimers) => {
@@ -95,15 +94,15 @@ export const TimerProvider = ({ children }) => {
   }, [isAuthorized, authLoading]);
 
   return (
-    <TimerContext.Provider value={{ 
-      timers, 
-      updateTimers, 
-      soundSettings, 
-      updateSoundSettings, 
-      theme, 
-      setTheme, 
-      resetToDefaults, 
-      loading 
+    <TimerContext.Provider value={{
+      timers,
+      updateTimers,
+      soundSettings,
+      updateSoundSettings,
+      theme,
+      setTheme,
+      resetToDefaults,
+      loading,
     }}>
       {children}
     </TimerContext.Provider>

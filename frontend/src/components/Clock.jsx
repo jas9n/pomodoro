@@ -1,18 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { useTimer } from "../contexts/TimerContext"; 
 import api from "../api";
-import "../styles/Clock.css";
+
+import PlayIcon from '../assets/icons/play.svg?react'
+import PauseIcon from '../assets/icons/pause.svg?react'
+import ReloadIcon from '../assets/icons/reload.svg?react'
 
 import alarmSound from '../assets/sounds/alarm.mp3';
 import chimeSound from '../assets/sounds/chime.mp3';
 import cuckoSound from '../assets/sounds/cuckoo.mp3';
-import vibraSound from '../assets/sounds/vibrate.mp3';
+import vibrateSound from '../assets/sounds/vibrate.mp3';
 
 const SOUNDS = {
   'alarm': alarmSound,
   'chime': chimeSound,
   'cuckoo': cuckoSound,
-  'vibrate': vibraSound
+  'vibrate': vibrateSound
 };
 
 function Clock() {
@@ -50,7 +53,7 @@ function Clock() {
 
     const playAlarm = () => {
         if (alarmSound.current) {
-            alarmSound.current.currentTime = 0; 
+            alarmSound.current.currentTime = 0;
             alarmSound.current.play();
         }
 
@@ -63,7 +66,7 @@ function Clock() {
                     console.error("Failed to update analytics:", error);
                 });
         }
-    }; 
+    };
 
     const startTimer = () => {
         if (!isPaused) return;
@@ -93,73 +96,84 @@ function Clock() {
         if (activeTimer === "pomodoro") {
             setTime(timers.pomodoro * 60);
         } else if (activeTimer === "short-break") {
-            setTime(timers.shortBreak * 60); 
+            setTime(timers.shortBreak * 60);
         } else if (activeTimer === "long-break") {
-            setTime(timers.longBreak * 60); 
+            setTime(timers.longBreak * 60);
         }
     };
 
-    // Switch the timer type and reset the time
     const switchTimer = (timerType) => {
         clearInterval(intervalId.current);
         setIsPaused(true);
         setActiveTimer(timerType);
 
         if (timerType === "pomodoro") {
-            setTime(timers.pomodoro * 60); // Use work time from context
+            setTime(timers.pomodoro * 60);
         } else if (timerType === "short-break") {
-            setTime(timers.shortBreak * 60); // Use short break time from context
+            setTime(timers.shortBreak * 60);
         } else if (timerType === "long-break") {
-            setTime(timers.longBreak * 60); // Use long break time from context
+            setTime(timers.longBreak * 60);
         }
     };
 
     return (
-        <div className="clock">
-            <div className="clock-select">
-                <div
-                    id="pomodoro"
-                    className={activeTimer === "pomodoro" ? "active" : ""}
+        <div className="flex flex-col items-center space-y-6 p-4 bg-background text-color">
+            {/* Timer Select */}
+            <div className="flex space-x-4">
+                <button
+                    className={`px-4 py-2 rounded-full transition ${
+                        activeTimer === "pomodoro"
+                            ? "bg-primary text-color"
+                            : "bg-secondary text-tertiary"
+                    }`}
                     onClick={() => switchTimer("pomodoro")}
                 >
                     Pomodoro
-                </div>
-                <div
-                    id="short-break"
-                    className={activeTimer === "short-break" ? "active" : ""}
+                </button>
+                <button
+                    className={`px-4 py-2 rounded-full transition ${
+                        activeTimer === "short-break"
+                             ? "bg-primary text-color"
+                            : "bg-secondary text-tertiary"
+                    }`}
                     onClick={() => switchTimer("short-break")}
                 >
                     Short Break
-                </div>
-                <div
-                    id="long-break"
-                    className={activeTimer === "long-break" ? "active" : ""}
+                </button>
+                <button
+                    className={`px-4 py-2 rounded-full transition ${
+                        activeTimer === "long-break"
+                             ? "bg-primary text-color"
+                            : "bg-secondary text-tertiary"
+                    }`}
                     onClick={() => switchTimer("long-break")}
                 >
                     Long Break
-                </div>
+                </button>
             </div>
 
-            <div className="timer" id="time">
+            {/* Timer Display */}
+            <h1 className="text-6xl font-mono cursor-default">
                 {formatTime(time)}
-            </div>
+            </h1>
 
-            <div className="options">
-                <div
-                    id="play"
+            {/* Timer Options */}
+            <div className="flex space-x-4">
+                <button
+                    className="p-3 rounded-full bg-primary fill-color transition hover:opacity-70 hover:animate-pulse"
                     onClick={() => {
-                        if (isPaused) {
-                            startTimer();
-                        } else {
-                            pauseTimer();
-                        }
+                        if (isPaused) startTimer();
+                        else pauseTimer();
                     }}
                 >
-                    {isPaused ? "Start" : "Pause"}
-                </div>
-                <div id="reset" onClick={resetTimer}>
-                    Reset
-                </div>
+                    {isPaused ? <PlayIcon className='w-6 h-6' /> : <PauseIcon className='w-6 h-6'/>}
+                </button>
+                <button
+                    className="p-3 rounded-full bg-primary fill-color transition hover:opacity-70 hover:animate-spin"
+                    onClick={resetTimer}
+                >
+                    <ReloadIcon className='w-6 h-6'/>
+                </button>
             </div>
         </div>
     );

@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar';
 import { AuthContext } from '../contexts/AuthContext';
 import { useTimer } from '../contexts/TimerContext';
 import api from '../api';
-import '../styles/Home.css';
 
 function Home() {
   const [name, setName] = useState('');
@@ -28,6 +27,7 @@ function Home() {
     fetchUser();
   }, [isAuthorized]);
 
+
   if (authLoading || timerLoading) {
     return (
       <div className="home">
@@ -37,10 +37,11 @@ function Home() {
     );
   }
 
+  // Display timers for both logged-in and logged-out users
   return (
-    <div className="home">
+    <div className="flex justify-center items-center h-full bg-background">
       <Navbar />
-      {isAuthorized && <p>Hello, {name || 'User'}</p>}
+      {isAuthorized && <h2 className='text-color absolute mb-[18rem] text-3xl'>Hello, {name || 'User'}</h2>}
       <Clock
         pomodoro={timers.pomodoro}
         shortBreak={timers.shortBreak}

@@ -4,7 +4,6 @@ import { Authenticated, NotAuthenticated } from '../components/AuthWrappers';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../api';
 
-import '../styles/Stats.css';
 
 function Stats() {
     const [analytics, setAnalytics] = useState({ study_time: 0, days_logged: 0 });

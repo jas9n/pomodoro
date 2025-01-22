@@ -1,12 +1,12 @@
 import Form from '../components/Form'
-import '../styles/Home.css'
 import { Link } from 'react-router-dom'
+import BackIcon from '../assets/icons/back.svg?react'
 
 
 function Login() {
     return (
-        <div className='home'>
-            <Link className="home-button" to="/">Back</Link>
+        <div className='bg-background h-full flex justify-center items-center'>
+            <Link className="fixed top-6 right-6" to="/"><BackIcon className="fill-color w-8 h-8"/></Link>
             <Form route="/api/token/" method="login" />
         </div>
     )

@@ -4,8 +4,10 @@ import { useTimer } from '../contexts/TimerContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../api';
-import '../styles/Settings.css';
 
+import BackIcon from '../assets/icons/back.svg?react'
+import VolumeOnIcon from '../assets/icons/volume-on.svg?react'
+import VolumeOffIcon from '../assets/icons/volume-off.svg?react'
 import alarmSound from '../assets/sounds/alarm.mp3';
 import chimeSound from '../assets/sounds/chime.mp3';
 import cuckoSound from '../assets/sounds/cuckoo.mp3';
@@ -20,7 +22,8 @@ const SOUNDS = {
 
 function Settings() {
   const [activeTab, setActiveTab] = useState('timer');
-  const [statusMessage, setStatusMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const { timers, updateTimers, soundSettings, updateSoundSettings, resetToDefaults, loading } = useTimer();
   const { theme, toggleGlobalTheme } = useTheme();
   const { isAuthorized } = useContext(AuthContext);
@@ -108,8 +111,7 @@ function Settings() {
     audio.volume = soundSettings.isMuted ? 0 : soundSettings.volume / 100;
     
     audio.onerror = (e) => {
-      console.error('Failed to load audio file:', e);
-      setStatusMessage('Failed to play test sound. Please check your sound files.');
+      setErrorMessage('Failed to play test sound. Error with sound files.');
       currentAudio.current = null;
     };
 
@@ -120,8 +122,7 @@ function Settings() {
     currentAudio.current = audio;
     
     audio.play().catch(error => {
-      console.error('Failed to play audio:', error);
-      setStatusMessage('Failed to play test sound. Please check your browser settings.');
+      setErrorMessage('Failed to play test sound. Please check your browser settings.');
       currentAudio.current = null;
     });
   };
@@ -151,7 +152,7 @@ function Settings() {
 
   const handleSave = async () => {
     if (!isAuthorized) {
-      setStatusMessage('You must be logged in to save your preferences.');
+      setErrorMessage('You must be logged in to save your preferences.');
       return;
     }
 
@@ -168,12 +169,12 @@ function Settings() {
         },
       });
 
-      setStatusMessage('Preferences saved successfully!');
+      setSuccessMessage('Preferences saved successfully!');
     } catch (error) {
       if (error.response?.status === 401) {
-        setStatusMessage('Session expired. Please log in again.');
+        setErrorMessage('Session expired. Please log in again.');
       } else {
-        setStatusMessage('Failed to save preferences. Please try again.');
+        setErrorMessage('Failed to save preferences. Please try again.');
       }
       console.error('Error:', error);
     }
@@ -188,10 +189,8 @@ function Settings() {
   
     setInputValues(defaults);
     resetToDefaults(); 
-    setStatusMessage('Default settings restored.');
-  
-    document.body.className = 'light';
-  };
+    setSuccessMessage('Default settings restored.');
+    };
   
 
   if (loading) {
@@ -199,21 +198,22 @@ function Settings() {
   }
 
   return (
-    <div className="settings">
-      <Link className="home-button" to="/">Back</Link>
-      <div className="content">
-        <div className="list">
-          <p onClick={() => setActiveTab('timer')} className={`tab ${activeTab === 'timer' ? 'active' : ''}`}>Timers</p>
-          <p onClick={() => setActiveTab('sound')} className={`tab ${activeTab === 'sound' ? 'active' : ''}`}>Sounds</p>
+    <div className="bg-background text-color flex flex-col justify-center items-center h-full">
+      <Link className="fixed top-6 right-6" to="/"><BackIcon className="fill-color w-8 h-8"/></Link>
+      <div className="flex justify-between w-[30rem]">
+        <div className="flex flex-col space-y-4">
+          <p onClick={() => setActiveTab('timer')} className={` ${activeTab === 'timer' ? 'underline' : ''}`}>Timers</p>
+          <p onClick={() => setActiveTab('sound')} className={`tab ${activeTab === 'sound' ? 'underline' : ''}`}>Sounds</p>
           
-          <p onClick={() => setActiveTab('theme')} className={`tab ${activeTab === 'theme' ? 'active' : ''}`}>Theme</p>
+          <p onClick={() => setActiveTab('theme')} className={`tab ${activeTab === 'theme' ? 'underline' : ''}`}>Theme</p>
         </div>
-        <div className="display">
+        <div className="flex">
           {activeTab === 'timer' && (
-            <div className="timer">
+            <div className="flex space-x-8">
               <div>
-                <p>Pomodoro</p>
+                <label>Pomodoro</label>
                 <input
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.pomodoro}
@@ -223,8 +223,9 @@ function Settings() {
                 />
               </div>
               <div>
-                <p>Short Break</p>
+                <label>Short Break</label>
                 <input
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.shortBreak}
@@ -234,8 +235,9 @@ function Settings() {
                 />
               </div>
               <div>
-                <p>Long Break</p>
-                <input
+                <label>Long Break</label>
+                <input  
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.longBreak}
@@ -247,55 +249,102 @@ function Settings() {
             </div>
           )}
           {activeTab === 'sound' && (
-        <div className="sound-settings">
-          <div className="sound-selector">
-            <p>Alarm Sound</p>
-            <select 
-              value={soundSettings.selectedSound}
-              onChange={(e) => handleSoundChange(e.target.value)}
-              className="sound-dropdown"
-            >
-              {Object.entries(SOUNDS).map(([value, { label }]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
-          
-          <div className="volume-control">
-            <p>Volume</p>
-            <div className="volume-slider">
-              <button onClick={handleMuteToggle}>
-                {soundSettings.isMuted ? '🔇' : '🔊'}
-              </button>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={soundSettings.volume}
-                onChange={(e) => handleVolumeChange(e.target.value)}
-                disabled={soundSettings.isMuted}
-              />
-              <span>{soundSettings.volume}%</span>
-            </div>
+       <div className="flex flex-col justify-start items-start space-y-4">
+       {/* Styled Select Dropdown */}
+       <div className="flex justify-center items-center space-x-4">
+         <p className="">Alarm Sound</p>
+         <select 
+           value={soundSettings.selectedSound}
+           onChange={(e) => handleSoundChange(e.target.value)}
+           className="bg-gray-50 border border-gray-300 text-sm rounded-lg shadow-sm px-4 py-2 focus:ring-blue-500 focus:border-blue-500 transition"
+         >
+           {Object.entries(SOUNDS).map(([value, { label }]) => (
+             <option key={value} value={value} className="text-gray-700">
+               {label}
+             </option>
+           ))}
+         </select>
+       </div>
+       
+       {/* Styled Volume Control */}
+       <div className="volume-control space-y-4">
+  <p className="">Volume - {soundSettings.volume}%</p>
+  <div className="flex items-center space-x-4">
+    {/* Mute/Unmute Button */}
+    <button 
+      onClick={handleMuteToggle} 
+      className="transition"
+    >
+      {soundSettings.isMuted ? (
+        <VolumeOnIcon className="fill-color w-6 h-6" />
+      ) : (
+        <VolumeOffIcon className="fill-color w-6 h-6" />
+      )}
+    </button>
+
+    {/* Styled Range Input */}
+    <div className="relative w-full">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value={soundSettings.volume}
+        onChange={(e) => handleVolumeChange(e.target.value)}
+        disabled={soundSettings.isMuted}
+        className={`
+          appearance-none w-full h-2 rounded-lg cursor-pointer 
+          ${soundSettings.isMuted ? 'bg-secondary' : 'bg-primary'}
+          accent-blue-500
+        `}
+      />
+      {/* Custom Thumb Styling */}
+      <style>
+        {`
+          input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            height: 16px;
+            width: 16px;
+            border: none;
+            border-radius: 50%;
+            background: ${soundSettings.isMuted ? '#A0AEC0' : '#3b82f6'};
+            cursor: pointer;
+          }
+          input[type="range"]::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border: none;
+            border-radius: 50%;
+            background: ${soundSettings.isMuted ? '#A0AEC0' : '#3b82f6'};
+            cursor: pointer;
+          }
+        `}
+      </style>
+    </div>
+  </div>
+</div>
+     
+      
+     </div>
+      )}
+      {activeTab === 'theme' && (
+        <div className='flex justify-center items-center space-x-3'>
+          <p>Dark Mode</p>
+          <div className={`relative w-10 h-6 flex items-center ${theme === 'dark' ? 'bg-blue-500' : 'bg-gray-300'} rounded-full p-1 cursor-pointer transition`} onClick={toggleGlobalTheme}>
+            <div className={`h-4 w-4 bg-white rounded-full shadow-md transform ${theme === 'dark' ? 'translate-x-4' : ''} transition`}></div>
           </div>
         </div>
       )}
-          {activeTab === 'theme' && (
-            <button onClick={toggleGlobalTheme}>
-              Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
-            </button>
-          )}
-        </div>
+        
+      </div>
       </div>
       { isAuthorized && (
-        <div className="btns">
-          <button onClick={handleRestoreDefault}>Restore Default</button>
-          <button onClick={handleSave} className="save-button">Save Changes</button>
+        <div className="flex mt-8 w-[30rem] justify-between">
+          <button onClick={handleRestoreDefault} className='px-4 py-2 text-red-500 border border-solid border-red-500 rounded-md'>Restore Default</button>
+          <button onClick={handleSave} className='px-4 py-2 bg-blue-500 rounded-md'>Save Changes</button>
         </div>
       )}
-      {statusMessage && <p className="status-message">{statusMessage}</p>}
+      {errorMessage && <div className="fixed top-12 bg-red-100 text-red-800 px-4 py-2 rounded-md">{errorMessage}</div>}
+      {successMessage && <div className="fixed top-12 bg-green-100 text-green-800 px-4 py-2 rounded-md">{successMessage}</div>}
     </div>
   );
 }

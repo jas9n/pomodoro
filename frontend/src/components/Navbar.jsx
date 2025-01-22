@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import '../styles/Navbar.css';
 
 function Navbar() {
     const { isAuthorized, logout } = useContext(AuthContext);
@@ -20,19 +19,19 @@ function Navbar() {
     const { theme } = useTheme();
 
     return (
-        <nav>
-            <NavLink to="/settings" className={({ isActive }) => isActive ? 'link active' : 'link'}>
+        <nav className='fixed top-4 space-x-8 text-color'>
+            <NavLink to="/settings">
                 Settings
             </NavLink>
-            <NavLink to="/stats" className={({ isActive }) => isActive ? 'link active' : 'link'}>
+            <NavLink to="/stats">
                 Analytics
             </NavLink>
             {!isAuthorized ? (
-                <button onClick={handleLogin} className="link">
+                <button onClick={handleLogin} className='text-blue-500'>
                     Log In
                 </button>
             ) : (
-                <button onClick={handleLogout} className="link login">
+                <button onClick={handleLogout} className='text-red-500'>
                     Logout
                 </button>
             )}

@@ -9,7 +9,6 @@ import Stats from "./pages/Stats";
 import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TimerProvider } from "./contexts/TimerContext";
-import './styles/App.css';
 
 function Logout() {
   localStorage.clear();
