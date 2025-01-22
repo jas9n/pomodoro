@@ -207,13 +207,13 @@ function Settings() {
           
           <p onClick={() => setActiveTab('theme')} className={`tab ${activeTab === 'theme' ? 'underline' : ''}`}>Theme</p>
         </div>
-        <div className="flex">
+        <div className="flex justify-end item-center w-[22rem]">
           {activeTab === 'timer' && (
-            <div className="flex space-x-8">
+            <div className="w-full flex justify-between items-center">
               <div>
                 <label>Pomodoro</label>
                 <input
-                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.pomodoro}
@@ -225,7 +225,7 @@ function Settings() {
               <div>
                 <label>Short Break</label>
                 <input
-                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.shortBreak}
@@ -237,7 +237,7 @@ function Settings() {
               <div>
                 <label>Long Break</label>
                 <input  
-                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.longBreak}
@@ -249,17 +249,17 @@ function Settings() {
             </div>
           )}
           {activeTab === 'sound' && (
-       <div className="flex flex-col justify-start items-start space-y-4">
+       <div className="w-full flex flex-col justify-center items-end space-y-4">
        {/* Styled Select Dropdown */}
-       <div className="flex justify-center items-center space-x-4">
+       <div className="w-full flex justify-between items-center">
          <p className="">Alarm Sound</p>
          <select 
            value={soundSettings.selectedSound}
            onChange={(e) => handleSoundChange(e.target.value)}
-           className="bg-gray-50 border border-gray-300 text-sm rounded-lg shadow-sm px-4 py-2 focus:ring-blue-500 focus:border-blue-500 transition"
+           className="bg-background border border-solid border-zinc-300 text-sm rounded-md px-3 py-2.5 focus:ring-0 focus:border-blue-500 transition"
          >
            {Object.entries(SOUNDS).map(([value, { label }]) => (
-             <option key={value} value={value} className="text-gray-700">
+             <option key={value} value={value} className="text-color">
                {label}
              </option>
            ))}
@@ -267,8 +267,8 @@ function Settings() {
        </div>
        
        {/* Styled Volume Control */}
-       <div className="volume-control space-y-4">
-  <p className="">Volume - {soundSettings.volume}%</p>
+       <div className="w-full flex justify-between items-center ">
+  <p className="">Volume</p>
   <div className="flex items-center space-x-4">
     {/* Mute/Unmute Button */}
     <button 
@@ -276,9 +276,9 @@ function Settings() {
       className="transition"
     >
       {soundSettings.isMuted ? (
-        <VolumeOnIcon className="fill-color w-6 h-6" />
-      ) : (
         <VolumeOffIcon className="fill-color w-6 h-6" />
+      ) : (
+        <VolumeOnIcon className="fill-color w-6 h-6" />
       )}
     </button>
 
@@ -288,12 +288,11 @@ function Settings() {
         type="range"
         min="0"
         max="100"
-        value={soundSettings.volume}
+        value={soundSettings.isMuted ? '0' : soundSettings.volume}
         onChange={(e) => handleVolumeChange(e.target.value)}
         disabled={soundSettings.isMuted}
         className={`
-          appearance-none w-full h-2 rounded-lg cursor-pointer 
-          ${soundSettings.isMuted ? 'bg-secondary' : 'bg-primary'}
+          appearance-none w-full h-2 rounded-lg cursor-pointer bg-primary
           accent-blue-500
         `}
       />
@@ -306,7 +305,7 @@ function Settings() {
             width: 16px;
             border: none;
             border-radius: 50%;
-            background: ${soundSettings.isMuted ? '#A0AEC0' : '#3b82f6'};
+            background: ${soundSettings.isMuted ? '#71717a' : '#3b82f6'};
             cursor: pointer;
           }
           input[type="range"]::-moz-range-thumb {
@@ -314,7 +313,7 @@ function Settings() {
             width: 16px;
             border: none;
             border-radius: 50%;
-            background: ${soundSettings.isMuted ? '#A0AEC0' : '#3b82f6'};
+            background: ${soundSettings.isMuted ? '#71717a' : '#3b82f6'};
             cursor: pointer;
           }
         `}
@@ -327,7 +326,7 @@ function Settings() {
      </div>
       )}
       {activeTab === 'theme' && (
-        <div className='flex justify-center items-center space-x-3'>
+        <div className='w-full flex justify-between items-center space-x-3'>
           <p>Dark Mode</p>
           <div className={`relative w-10 h-6 flex items-center ${theme === 'dark' ? 'bg-blue-500' : 'bg-gray-300'} rounded-full p-1 cursor-pointer transition`} onClick={toggleGlobalTheme}>
             <div className={`h-4 w-4 bg-white rounded-full shadow-md transform ${theme === 'dark' ? 'translate-x-4' : ''} transition`}></div>
