@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,6 +12,10 @@
 
 html, body, #root {
   height: 100%;
+}
+
+.clock {
+  font-family: "Cutive Mono", serif;
 }
 
 :root {

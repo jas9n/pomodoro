@@ -153,7 +153,7 @@ function Clock() {
             </div>
 
             {/* Timer Display */}
-            <h1 className="text-6xl font-mono cursor-default">
+            <h1 className="clock text-7xl cursor-default">
                 {formatTime(time)}
             </h1>
 
