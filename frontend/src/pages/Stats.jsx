@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Authenticated, NotAuthenticated } from '../components/AuthWrappers';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../api';
+import BackIcon from '../assets/icons/back.svg?react'
+
 
 
 function Stats() {
@@ -33,26 +35,50 @@ function Stats() {
     const formatStudyTime = (minutes) => {
         const hours = Math.floor(minutes / 60);
         const mins = minutes % 60;
-        return `${hours} hours, ${mins} minutes`;
+        if (mins < 2) {
+             return `${mins} minute`;
+        } else {
+            if (hours < 1) {
+                return `${mins} minutes`;
+            } else {
+                return `${hours} hours, ${mins} minutes`;
+            }
+        }
     };
+
+    const formatDays = (days) => {
+        if (days < 2) {
+            return `${days} day`
+        } else {
+            return `${days} days`
+        }
+    }
 
     if (loading) {
         return <p>Loading...</p>;
     }
 
     return (
-        <div className="stats">
-            <Link className="home-button" to="/">Back</Link>
+        <div className="bg-background text-color h-full flex justify-center items-center cursor-default">
+            <Link className="fixed top-6 right-6" to="/"><BackIcon className="fill-secondary w-8 h-8"/></Link>
             
             <Authenticated>
-                <div className="analytics">
-                    <p><strong>Total Study Time:</strong> {formatStudyTime(analytics.study_time)}</p>
-                    <p><strong>Days Logged In:</strong> {analytics.days_logged}</p>
+                <div className="flex flex-col w-[30rem] shadow-md rounded-xl p-8">
+                    <div className='flex justify-between w-full text-lg'>
+                        <p className='font-medium'>Total Study Time</p>
+                        <p>{formatStudyTime(analytics.study_time)}</p>
+                    </div>
+                    <hr className='border border-color my-2'/>
+                    <div className='flex justify-between w-full text-lg'>
+                        <p className='font-medium'>Days Logged In</p>
+                        <p>{formatDays(analytics.days_logged)}</p>
+                    </div>
+                    
                 </div>
             </Authenticated>
 
             <NotAuthenticated>
-                <p>Analytics will be available when you are logged in.</p>
+                <div className='font-medium text-color p-6 rounded-md shadow-md'>Analytics will be available when you are logged in.</div>
             </NotAuthenticated>
         </div>
     );

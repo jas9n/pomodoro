@@ -41,6 +41,10 @@ html, body, #root {
     @apply fill-[var(--text-color)];
   }
 
+  .fill-secondary {
+    @apply fill-[var(--tertiary-color)];
+  }
+
   .bg-primary {
     @apply bg-[var(--primary-color)];
   }
@@ -51,4 +55,12 @@ html, body, #root {
 
   .text-tertiary {
     @apply text-[var(--tertiary-color)];
+  }
+
+  .border-color {
+    @apply border-[var(--secondary-color)]
+  }
+
+  .border-secondary {
+    @apply border-[var(--primary-color)]
   }

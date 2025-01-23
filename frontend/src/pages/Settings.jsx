@@ -199,21 +199,21 @@ function Settings() {
 
   return (
     <div className="bg-background text-color flex flex-col justify-center items-center h-full">
-      <Link className="fixed top-6 right-6" to="/"><BackIcon className="fill-color w-8 h-8"/></Link>
+      <Link className="fixed top-6 right-6" to="/"><BackIcon className="fill-secondary w-8 h-8"/></Link>
       <div className="flex justify-between w-[30rem]">
-        <div className="flex flex-col space-y-4">
-          <p onClick={() => setActiveTab('timer')} className={` ${activeTab === 'timer' ? 'underline' : ''}`}>Timers</p>
-          <p onClick={() => setActiveTab('sound')} className={`tab ${activeTab === 'sound' ? 'underline' : ''}`}>Sounds</p>
+        <div className="flex flex-col space-y-6 font-medium">
+          <p onClick={() => setActiveTab('timer')} className={`cursor-pointer ${activeTab === 'timer' ? 'underline' : ''}`}>Timers</p>
+          <p onClick={() => setActiveTab('sound')} className={`cursor-pointer ${activeTab === 'sound' ? 'underline' : ''}`}>Sounds</p>
           
-          <p onClick={() => setActiveTab('theme')} className={`tab ${activeTab === 'theme' ? 'underline' : ''}`}>Theme</p>
+          <p onClick={() => setActiveTab('theme')} className={`cursor-pointer ${activeTab === 'theme' ? 'underline' : ''}`}>Theme</p>
         </div>
         <div className="flex justify-end item-center w-[22rem]">
           {activeTab === 'timer' && (
             <div className="w-full flex justify-between items-center">
               <div>
-                <label>Pomodoro</label>
+                <label className='font-medium text-sm'>Pomodoro</label>
                 <input
-                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-secondary rounded-md border border-color appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.pomodoro}
@@ -223,9 +223,9 @@ function Settings() {
                 />
               </div>
               <div>
-                <label>Short Break</label>
+                <label className='font-medium text-sm'>Short Break</label>
                 <input
-                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-secondary rounded-md border border-color appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.shortBreak}
@@ -235,9 +235,9 @@ function Settings() {
                 />
               </div>
               <div>
-                <label>Long Break</label>
+                <label className='font-medium text-sm'>Long Break</label>
                 <input  
-                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-transparent rounded-md border border-solid border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
+                  className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-secondary rounded-md border border-color appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
                   inputMode="numeric"
                   value={inputValues.longBreak}
@@ -252,11 +252,11 @@ function Settings() {
        <div className="w-full flex flex-col justify-center items-end space-y-4">
        {/* Styled Select Dropdown */}
        <div className="w-full flex justify-between items-center">
-         <p className="">Alarm Sound</p>
+         <label className="font-medium">Alarm Sound</label>
          <select 
            value={soundSettings.selectedSound}
            onChange={(e) => handleSoundChange(e.target.value)}
-           className="bg-background border border-solid border-zinc-300 text-sm rounded-md px-3 py-2.5 focus:ring-0 focus:border-blue-500 transition"
+           className="bg-secondary border border-solid border-color text-sm rounded-md px-3 py-2.5 cursor-pointer focus:ring-0 transition"
          >
            {Object.entries(SOUNDS).map(([value, { label }]) => (
              <option key={value} value={value} className="text-color">
@@ -268,20 +268,10 @@ function Settings() {
        
        {/* Styled Volume Control */}
        <div className="w-full flex justify-between items-center ">
-  <p className="">Volume</p>
-  <div className="flex items-center space-x-4">
+  <label className="font-medium">Volume</label>
+  <div className="flex items-center space-x-2">
     {/* Mute/Unmute Button */}
-    <button 
-      onClick={handleMuteToggle} 
-      className="transition"
-    >
-      {soundSettings.isMuted ? (
-        <VolumeOffIcon className="fill-color w-6 h-6" />
-      ) : (
-        <VolumeOnIcon className="fill-color w-6 h-6" />
-      )}
-    </button>
-
+    <VolumeOffIcon className="fill-secondary w-4 h-4" />
     {/* Styled Range Input */}
     <div className="relative w-full">
       <input
@@ -290,9 +280,8 @@ function Settings() {
         max="100"
         value={soundSettings.isMuted ? '0' : soundSettings.volume}
         onChange={(e) => handleVolumeChange(e.target.value)}
-        disabled={soundSettings.isMuted}
         className={`
-          appearance-none w-full h-2 rounded-lg cursor-pointer bg-primary
+          appearance-none w-full h-2 rounded-lg cursor-pointer bg-secondary
           accent-blue-500
         `}
       />
@@ -305,7 +294,7 @@ function Settings() {
             width: 16px;
             border: none;
             border-radius: 50%;
-            background: ${soundSettings.isMuted ? '#71717a' : '#3b82f6'};
+            background: ${'#3b82f6'};
             cursor: pointer;
           }
           input[type="range"]::-moz-range-thumb {
@@ -313,12 +302,13 @@ function Settings() {
             width: 16px;
             border: none;
             border-radius: 50%;
-            background: ${soundSettings.isMuted ? '#71717a' : '#3b82f6'};
+            background: ${'#3b82f6'};
             cursor: pointer;
           }
         `}
       </style>
     </div>
+    <VolumeOnIcon className="fill-secondary w-4 h-4" />
   </div>
 </div>
      
@@ -327,9 +317,9 @@ function Settings() {
       )}
       {activeTab === 'theme' && (
         <div className='w-full flex justify-between items-center space-x-3'>
-          <p>Dark Mode</p>
-          <div className={`relative w-10 h-6 flex items-center ${theme === 'dark' ? 'bg-blue-500' : 'bg-gray-300'} rounded-full p-1 cursor-pointer transition`} onClick={toggleGlobalTheme}>
-            <div className={`h-4 w-4 bg-white rounded-full shadow-md transform ${theme === 'dark' ? 'translate-x-4' : ''} transition`}></div>
+          <label className='font-medium'>Dark Mode</label>
+          <div className={`relative w-10 h-6 flex items-center ${theme === 'dark' ? 'bg-blue-500' : 'bg-primary'} rounded-full p-1 cursor-pointer transition`} onClick={toggleGlobalTheme}>
+            <div className={`h-4 w-4 bg-white rounded-full  transform ${theme === 'dark' ? 'translate-x-4' : ''} transition`}></div>
           </div>
         </div>
       )}

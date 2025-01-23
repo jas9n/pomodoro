@@ -41,7 +41,7 @@ function Home() {
   return (
     <div className="flex justify-center items-center h-full bg-background">
       <Navbar />
-      {isAuthorized && <h2 className='text-color absolute mb-[18rem] text-3xl'>Hello, {name || 'User'}</h2>}
+      {isAuthorized && <h2 className='text-color font-medium absolute mb-[18rem] text-3xl'>Hello, {name || 'User'}</h2>}
       <Clock
         pomodoro={timers.pomodoro}
         shortBreak={timers.shortBreak}

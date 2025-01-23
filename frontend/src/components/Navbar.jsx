@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -19,19 +19,19 @@ function Navbar() {
     const { theme } = useTheme();
 
     return (
-        <nav className='fixed top-4 space-x-8 text-color'>
-            <NavLink to="/settings">
+        <nav className='fixed font-medium top-4 space-x-8 text-color'>
+            <Link to="/settings" className={"hover:underline"}>
                 Settings
-            </NavLink>
-            <NavLink to="/stats">
+            </Link>
+            <Link to="/stats" className={"hover:underline"}>
                 Analytics
-            </NavLink>
+            </Link>
             {!isAuthorized ? (
-                <button onClick={handleLogin} className='text-blue-500'>
+                <button onClick={handleLogin} className='transition text-blue-500 hover:text-blue-600'>
                     Log In
                 </button>
             ) : (
-                <button onClick={handleLogout} className='text-red-500'>
+                <button onClick={handleLogout} className='transition text-red-500 hover:text-red-600'>
                     Logout
                 </button>
             )}

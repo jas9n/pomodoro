@@ -52,7 +52,7 @@ function Form({ route, method }) {
                 if (error.response.status === 401) {
                     setErrorMessage('Incorrect password or unregistered user.');
                 } else if (error.response.status === 400) {
-                    setErrorMessage('Invalid registration details.');
+                    setErrorMessage('Missing field.');
                 } else {
                     setErrorMessage('An unexpected error occurred. Please try again.');
                 }
@@ -65,10 +65,10 @@ function Form({ route, method }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-[18rem] rounded-lg space-y-4 text-color">
-            <p className='text-3xl'>{nameLabel}</p>
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-[22rem] rounded-lg space-y-4 text-color p-12 shadow-md">
+            <p className='text-3xl font-medium'>{nameLabel}</p>
                 <input
-                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
+                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -76,7 +76,7 @@ function Form({ route, method }) {
                 />
             {method === 'register' && (
                 <input
-                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
+                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -84,7 +84,7 @@ function Form({ route, method }) {
                 />
             )}
             <input
-                className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
+                className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -92,7 +92,7 @@ function Form({ route, method }) {
             />
             {method === 'register' && (
                 <input
-                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
+                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -112,14 +112,14 @@ function Form({ route, method }) {
 
             {method === 'login' && (
                 <div className="flex space-x-1.5">
-                    <p>Don't have an account?</p>
-                    <Link to="/register" className='text-blue-500'>Register here.</Link>
+                    <p className='text-sm'>Don't have an account?</p>
+                    <Link to="/register" className='text-sm text-blue-500'>Register here.</Link>
                 </div>
             )}
             {method === 'register' && (
                 <div className="flex space-x-1.5">
-                    <p>Already have an account?</p>
-                    <Link to="/login" className='text-blue-500'>Log in.</Link>
+                    <p className='text-sm'>Already have an account?</p>
+                    <Link to="/login" className='text-sm text-blue-500'>Log in.</Link>
                 </div>
             )}
 
