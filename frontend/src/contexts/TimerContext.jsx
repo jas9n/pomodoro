@@ -231,8 +231,10 @@ export const TimerProvider = ({ children }) => {
   
       if (currentTimer.time === 0) {
         if (currentTimer.type === "pomodoro") {
-          api.post('api/user/analytics/', { study_time: timers.pomodoro })
-
+          if (isAuthorized) {
+            api.post('api/user/analytics/', { study_time: timers.pomodoro })
+          }
+          
           alert('Session complete! Take a break and recharge.')
         }
 
