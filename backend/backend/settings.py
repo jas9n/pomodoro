@@ -30,7 +30,9 @@ SECRET_KEY = 'django-insecure-v@)ms+wk+h)!lo*4(l7v9-fomz!a=i__l%ox+nzgo7#j)ln&4h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+
+APP_NAME = os.environ.get('pomodoro-backend')
+ALLOWED_HOSTS = ["backend-restless-waterfall-8217.fly.dev"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

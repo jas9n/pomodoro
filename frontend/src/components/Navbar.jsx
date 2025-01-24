@@ -27,7 +27,7 @@ function Navbar() {
                 Analytics
             </Link>
             {!isAuthorized ? (
-                <button onClick={handleLogin} className='transition text-blue-500 hover:text-blue-400'>
+                <button onClick={handleLogin} className='font-semibold transition text-blue-500 hover:text-blue-400'>
                     Log In
                 </button>
             ) : (
