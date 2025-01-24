@@ -24,7 +24,7 @@ function Settings() {
   const [activeTab, setActiveTab] = useState('timer');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const { timers, updateTimers, soundSettings, updateSoundSettings, resetToDefaults, loading } = useTimer();
+  const { timers, updateTimers, soundSettings, updateSoundSettings, resetToDefaults, loading, displayGreeting, setDisplayGreeting, clockFont, setClockFont, CLOCK_FONTS } = useTimer();
   const { theme, toggleGlobalTheme } = useTheme();
   const { isAuthorized } = useContext(AuthContext);
   const currentAudio = useRef(null);
@@ -141,15 +141,6 @@ function Settings() {
     }
   };
 
-  const handleMuteToggle = () => {
-    const newMuted = !soundSettings.isMuted;
-    updateSoundSettings({ isMuted: newMuted });
-    
-    if (currentAudio.current) {
-      currentAudio.current.volume = newMuted ? 0 : soundSettings.volume / 100;
-    }
-  };
-
   const handleSave = async () => {
     if (!isAuthorized) {
       setErrorMessage('You must be logged in to save your preferences.');
@@ -165,7 +156,9 @@ function Settings() {
             longBreak: parseInt(inputValues.longBreak, 10),
           },
           sound: soundSettings,
-          theme
+          theme, 
+          displayGreeting,
+          clockFont
         },
       });
 
@@ -178,6 +171,10 @@ function Settings() {
       }
       console.error('Error:', error);
     }
+  };
+
+  const handleToggleGreeting = () => {
+    setDisplayGreeting(!displayGreeting);
   };
 
   const handleRestoreDefault = () => {
@@ -199,15 +196,17 @@ function Settings() {
 
   return (
     <div className="bg-background text-color flex flex-col justify-center items-center h-full">
-      <Link className="fixed top-6 right-6" to="/"><BackIcon className="fill-secondary w-8 h-8"/></Link>
-      <div className="flex justify-between w-[30rem]">
+      <Link title={"Close"} className="fixed top-6 right-6" to="/"><BackIcon className="fill-secondary w-8 h-8"/></Link>
+      <div className='p-16 shadow-md rounded-lg'>
+
+      <div className="flex justify-between w-[32rem] h-[12rem]">
         <div className="flex flex-col space-y-6 font-medium">
           <p onClick={() => setActiveTab('timer')} className={`cursor-pointer ${activeTab === 'timer' ? 'underline' : ''}`}>Timers</p>
           <p onClick={() => setActiveTab('sound')} className={`cursor-pointer ${activeTab === 'sound' ? 'underline' : ''}`}>Sounds</p>
           
-          <p onClick={() => setActiveTab('theme')} className={`cursor-pointer ${activeTab === 'theme' ? 'underline' : ''}`}>Theme</p>
+          <p onClick={() => setActiveTab('other')} className={`cursor-pointer ${activeTab === 'other' ? 'underline' : ''}`}>Other</p>
         </div>
-        <div className="flex justify-end item-center w-[22rem]">
+        <div className="flex justify-end item-center w-[24rem]">
           {activeTab === 'timer' && (
             <div className="w-full flex justify-between items-center">
               <div>
@@ -220,7 +219,7 @@ function Settings() {
                   onChange={(e) => handleInputChange('pomodoro', e.target.value)}
                   onBlur={() => handleInputBlur('pomodoro')}
                   placeholder="25"
-                />
+                  />
               </div>
               <div>
                 <label className='font-medium text-sm'>Short Break</label>
@@ -232,7 +231,7 @@ function Settings() {
                   onChange={(e) => handleInputChange('shortBreak', e.target.value)}
                   onBlur={() => handleInputBlur('shortBreak')}
                   placeholder="5"
-                />
+                  />
               </div>
               <div>
                 <label className='font-medium text-sm'>Long Break</label>
@@ -244,12 +243,12 @@ function Settings() {
                   onChange={(e) => handleInputChange('longBreak', e.target.value)}
                   onBlur={() => handleInputBlur('longBreak')}
                   placeholder="10"
-                />
+                  />
               </div>
             </div>
           )}
           {activeTab === 'sound' && (
-       <div className="w-full flex flex-col justify-center items-end space-y-4">
+            <div className="w-full flex flex-col justify-center items-end space-y-4">
        {/* Styled Select Dropdown */}
        <div className="w-full flex justify-between items-center">
          <label className="font-medium">Alarm Sound</label>
@@ -257,7 +256,7 @@ function Settings() {
            value={soundSettings.selectedSound}
            onChange={(e) => handleSoundChange(e.target.value)}
            className="bg-secondary border border-solid border-color text-sm rounded-md px-3 py-2.5 cursor-pointer focus:ring-0 transition"
-         >
+           >
            {Object.entries(SOUNDS).map(([value, { label }]) => (
              <option key={value} value={value} className="text-color">
                {label}
@@ -279,12 +278,13 @@ function Settings() {
         min="0"
         max="100"
         value={soundSettings.isMuted ? '0' : soundSettings.volume}
+        title={`${soundSettings.volume}%`}
         onChange={(e) => handleVolumeChange(e.target.value)}
         className={`
           appearance-none w-full h-2 rounded-lg cursor-pointer bg-secondary
           accent-blue-500
-        `}
-      />
+          `}
+          />
       {/* Custom Thumb Styling */}
       <style>
         {`
@@ -296,16 +296,16 @@ function Settings() {
             border-radius: 50%;
             background: ${'#3b82f6'};
             cursor: pointer;
-          }
-          input[type="range"]::-moz-range-thumb {
-            height: 16px;
-            width: 16px;
-            border: none;
-            border-radius: 50%;
-            background: ${'#3b82f6'};
-            cursor: pointer;
-          }
-        `}
+            }
+            input[type="range"]::-moz-range-thumb {
+              height: 16px;
+              width: 16px;
+              border: none;
+              border-radius: 50%;
+              background: ${'#3b82f6'};
+              cursor: pointer;
+              }
+              `}
       </style>
     </div>
     <VolumeOnIcon className="fill-secondary w-4 h-4" />
@@ -315,23 +315,49 @@ function Settings() {
       
      </div>
       )}
-      {activeTab === 'theme' && (
+      {activeTab === 'other' && (
+        <div className='w-full flex flex-col justify-center items-center space-y-4'>
         <div className='w-full flex justify-between items-center space-x-3'>
           <label className='font-medium'>Dark Mode</label>
           <div className={`relative w-10 h-6 flex items-center ${theme === 'dark' ? 'bg-blue-500' : 'bg-primary'} rounded-full p-1 cursor-pointer transition`} onClick={toggleGlobalTheme}>
             <div className={`h-4 w-4 bg-white rounded-full  transform ${theme === 'dark' ? 'translate-x-4' : ''} transition`}></div>
           </div>
         </div>
+        {isAuthorized && (
+          <div className='w-full flex justify-between items-center space-x-3'>
+          <label className='font-medium'>Display Greeting</label>
+          <div className={`relative w-10 h-6 flex items-center ${displayGreeting ? 'bg-blue-500' : 'bg-primary'} rounded-full p-1 cursor-pointer transition`} onClick={handleToggleGreeting}>
+            <div className={`h-4 w-4 bg-white rounded-full  transform ${displayGreeting ? 'translate-x-4' : ''} transition`}></div>
+          </div>
+          </div>
+        )}
+        <div className='w-full flex justify-between items-center space-x-3'>
+        <label className='font-medium'>Clock Font</label>
+        <select 
+          value={clockFont}
+          onChange={(e) => setClockFont(e.target.value)}
+          className="bg-secondary border border-solid border-color text-sm rounded-md px-3 py-2.5 cursor-pointer focus:ring-0 transition"
+          >
+          {CLOCK_FONTS.map(({ value, label }) => (
+            <option key={value} value={value} className="text-color">
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+        
+      </div>
       )}
         
       </div>
       </div>
       { isAuthorized && (
-        <div className="flex mt-8 w-[30rem] justify-between">
-          <button onClick={handleRestoreDefault} className='px-4 py-2 text-red-500 border border-solid border-red-500 rounded-md'>Restore Default</button>
-          <button onClick={handleSave} className='px-4 py-2 bg-blue-500 rounded-md'>Save Changes</button>
+        <div className="flex mt-8 w-[32rem] justify-between">
+          <button onClick={handleRestoreDefault} className='px-4 py-2 text-red-500 border border-solid border-red-500 rounded-md hover:text-white hover:bg-red-500 transition'>Restore Default</button>
+          <button onClick={handleSave} className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 transition'>Save Changes</button>
         </div>
       )}
+      </div>
       {errorMessage && <div className="fixed top-12 bg-red-100 text-red-800 px-4 py-2 rounded-md">{errorMessage}</div>}
       {successMessage && <div className="fixed top-12 bg-green-100 text-green-800 px-4 py-2 rounded-md">{successMessage}</div>}
     </div>

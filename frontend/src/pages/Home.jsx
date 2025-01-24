@@ -8,7 +8,7 @@ import api from '../api';
 function Home() {
   const [name, setName] = useState('');
   const { isAuthorized, loading: authLoading } = useContext(AuthContext);
-  const { timers, loading: timerLoading } = useTimer();
+  const { timers, loading: timerLoading, displayGreeting } = useTimer();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,7 +27,6 @@ function Home() {
     fetchUser();
   }, [isAuthorized]);
 
-
   if (authLoading || timerLoading) {
     return (
       <div className="home">
@@ -37,11 +36,14 @@ function Home() {
     );
   }
 
-  // Display timers for both logged-in and logged-out users
   return (
     <div className="flex justify-center items-center h-full bg-background">
       <Navbar />
-      {isAuthorized && <h2 className='text-color font-medium absolute mb-[18rem] text-3xl'>Hello, {name || 'User'}</h2>}
+      {isAuthorized && displayGreeting && (
+        <h2 className='text-color font-medium absolute mb-[18rem] text-3xl'>
+          Hello, {name || 'User'}
+        </h2>
+      )}
       <Clock
         pomodoro={timers.pomodoro}
         shortBreak={timers.shortBreak}

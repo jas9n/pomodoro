@@ -6,6 +6,14 @@ module.exports = {
     './index.html',
     "./src/**/*.{js,jsx,ts,tsx}", 
   ],
+  safelist:[
+    'font-roboto', 
+    'font-courier', 
+    'font-dm',
+    'font-cutive', 
+    'font-major', 
+    'font-doto',
+  ],
   theme: {
     extend: {
       colors: {
@@ -23,6 +31,14 @@ module.exports = {
           secondary: '#27272a',
           tertiary: '#71717a', 
         },
+      },
+      fontFamily: {
+        'roboto': ['Roboto Mono', 'serif'],
+        'courier': ['Courier Prime', 'serif'],
+        'dm': ['DM Mono', 'serif'],
+        'cutive': ['Cutive Mono', 'serif'],
+        'major': ['Major Mono Display', 'serif'],
+        'doto': ['Doto', 'serif'],
       },
     },
   },

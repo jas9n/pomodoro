@@ -32,6 +32,8 @@ class CurrentUserView(APIView):
             timers = preferences.get('timers')
             sound = preferences.get('sound')
             theme = preferences.get('theme')
+            display_greeting = preferences.get('displayGreeting')
+            clock_font = preferences.get('clockFont')  
 
             if timers and isinstance(timers, dict):
                 user.preferences['timers'] = timers
@@ -41,6 +43,12 @@ class CurrentUserView(APIView):
 
             if theme and isinstance(theme, str):
                 user.preferences['theme'] = theme
+                
+            if display_greeting is not None:
+                user.preferences['displayGreeting'] = display_greeting
+                
+            if clock_font and isinstance(clock_font, str):
+                user.preferences['clockFont'] = clock_font
 
             user.save()
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400&family=Cutive+Mono&family=DM+Mono:wght@400&family=Doto:wght@700&family=Major+Mono+Display&family=Roboto+Mono:wght@400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -12,10 +12,6 @@
 
 html, body, #root {
   height: 100%;
-}
-
-.clock {
-  font-family: "Cutive Mono", serif;
 }
 
 :root {
@@ -69,4 +65,28 @@ html, body, #root {
 
   .border-secondary {
     @apply border-[var(--primary-color)]
+  }
+
+  [data-font='roboto'] {
+    font-family: 'Roboto Mono', serif;
+  }
+  
+  [data-font='courier'] {
+    font-family: 'Courier Prime', serif;
+  }
+  
+  [data-font='dm'] {
+    font-family: 'DM Mono', serif;
+  }
+
+  [data-font='cutive'] {
+    font-family: 'Cutive Mono', serif;
+  }
+
+  [data-font='major'] {
+    font-family: 'Major Mono Display', serif;
+  }
+
+  [data-font='doto'] {
+    font-family: 'Doto', serif;
   }
