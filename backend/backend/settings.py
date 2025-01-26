@@ -32,10 +32,12 @@ DEBUG = True
 
 
 APP_NAME = os.environ.get('pomodoro-backend')
+
 ALLOWED_HOSTS = [
-    "backend-restless-waterfall-8217.fly.dev", 
-    "pomodoro-timer-free.vercel.app", 
-    "localhost:5173"
+    "backend-restless-waterfall-8217.fly.dev",
+    "pomodoro-timer-free.vercel.app",
+    "localhost",
+    "127.0.0.1"
 ]
 
 REST_FRAMEWORK = {
@@ -153,5 +155,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://pomodoro-timer-free.vercel.app",
+    "http://localhost:5173"
+]
 CORS_ALLOW_CREDENTIALS = True
