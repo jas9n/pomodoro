@@ -32,7 +32,7 @@ DEBUG = True
 
 
 APP_NAME = os.environ.get('pomodoro-backend')
-ALLOWED_HOSTS = ["backend-restless-waterfall-8217.fly.dev"]
+ALLOWED_HOSTS = ["backend-restless-waterfall-8217.fly.dev", '*']
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
