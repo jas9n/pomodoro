@@ -3,6 +3,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from './constants';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
+    withCredentials: true,
 });
 
 // Request Interceptor
@@ -49,6 +50,7 @@ api.interceptors.response.use(
 
         // Log other errors for debugging
         console.error('API Error:', error);
+        console.log(import.meta.env.VITE_API_URL);
 
         return Promise.reject(error);
     }
