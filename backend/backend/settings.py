@@ -28,13 +28,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v@)ms+wk+h)!lo*4(l7v9-fomz!a=i__l%ox+nzgo7#j)ln&4h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 APP_NAME = os.environ.get('pomodoro-backend')
 
 ALLOWED_HOSTS = [
-    "backend-restless-waterfall-8217.fly.dev",
+    "backend-withered-dream-2309.fly.dev",
     "pomodoro-timer-free.vercel.app",
     "localhost",
     "127.0.0.1"
@@ -156,8 +156,31 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 CORS_ALLOWED_ORIGINS = [
     "https://pomodoro-timer-free.vercel.app",
     "http://localhost:5173"
 ]
-CORS_ALLOW_CREDENTIALS = True
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
