@@ -195,18 +195,18 @@ function Settings() {
   }
 
   return (
-    <div className="bg-background text-color flex justify-center items-center h-full">
+    <div className="bg-background text-color flex flex-col justify-center items-center h-full">
       <Link title={"Close"} className="fixed top-6 right-6" to="/"><BackIcon className="fill-secondary w-8 h-8"/></Link>
       <div className='p-16 shadow-md rounded-lg'>
 
-      <div className="flex flex-col-reverse sm:flex-row sm:justify-between w-[32rem] h-[12rem]">
-        <div className="flex justify-center items-center sm:flex-col sm:justify-start space-x-16 sm:space-x-0 sm:space-y-6 font-medium">
+      <div className="flex justify-between w-[32rem] h-[12rem]">
+        <div className="flex flex-col space-y-6 font-medium">
           <p onClick={() => setActiveTab('timer')} className={`cursor-pointer ${activeTab === 'timer' ? 'underline' : ''}`}>Timers</p>
           <p onClick={() => setActiveTab('sound')} className={`cursor-pointer ${activeTab === 'sound' ? 'underline' : ''}`}>Sounds</p>
           
           <p onClick={() => setActiveTab('other')} className={`cursor-pointer ${activeTab === 'other' ? 'underline' : ''}`}>Other</p>
         </div>
-        <div className="flex justify-center item-center w-[24rem]">
+        <div className="flex justify-end item-center w-[24rem]">
           {activeTab === 'timer' && (
             <div className="w-full flex justify-between items-center">
               <div>
