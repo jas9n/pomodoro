@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /code
+RUN mkdir -p /data && chmod -R 777 /data
 
 WORKDIR /code
 

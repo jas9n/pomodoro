@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v@)ms+wk+h)!lo*4(l7v9-fomz!a=i__l%ox+nzgo7#j)ln&4h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 APP_NAME = os.environ.get('pomodoro-backend')
@@ -36,6 +36,7 @@ APP_NAME = os.environ.get('pomodoro-backend')
 ALLOWED_HOSTS = [
     "backend-withered-dream-2309.fly.dev",
     "pomodoro-timer-free.vercel.app",
+    "pomodoro-free-online.vercel.app",
     "localhost",
     "127.0.0.1"
 ]
@@ -106,7 +107,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(os.getenv('FLY_VOLUME_PATH', ''), 'db.sqlite3') 
+                if not DEBUG else os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -179,6 +181,7 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://pomodoro-timer-free.vercel.app",
+    "https://pomodoro-free-online.vercel.app",
     "http://localhost:5173"
 ]
     
@@ -192,6 +195,7 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_TRUSTED_ORIGINS = [
     "https://pomodoro-timer-free.vercel.app",
+    "https://pomodoro-free-online.vercel.app",
     "http://localhost:5173"
 ]
 
