@@ -52,7 +52,9 @@ export const TimerProvider = ({ children }) => {
 
 
   const loadPreferences = async () => {
-    if (authLoading || !isAuthorized) {
+    if (authLoading) return;
+
+    if (!isAuthorized) {
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
       setTheme(defaultTheme);
@@ -66,7 +68,7 @@ export const TimerProvider = ({ children }) => {
     try {
       const response = await api.get('/api/user/');
       const userPreferences = response.data.preferences;
-  
+
       if (userPreferences?.timers) {
         setTimers(userPreferences.timers);
         resetCurrentTimer(userPreferences.timers);
@@ -74,24 +76,26 @@ export const TimerProvider = ({ children }) => {
         setTimers(defaultTimers);
         resetCurrentTimer(defaultTimers);
       }
-  
+
       if (userPreferences?.sound) {
         setSoundSettings(userPreferences.sound);
       } else {
         setSoundSettings(defaultSoundSettings);
       }
-  
+
       if (userPreferences?.theme) {
         setTheme(userPreferences.theme);
         document.documentElement.setAttribute('data-theme', userPreferences.theme);
       } else {
         setTheme(defaultTheme);
       }
-  
+
       setDisplayGreeting(userPreferences?.displayGreeting ?? true);
+
       setClockFont(userPreferences?.clockFont ?? 'roboto');
+
     } catch (error) {
-      console.error('Failed to load preferences:', error);
+      console.error('Failed to fetch preferences:', error);
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
       setTheme(defaultTheme);
@@ -102,7 +106,6 @@ export const TimerProvider = ({ children }) => {
       setLoading(false);
     }
   };
-  
 
   const resetCurrentTimer = (timerConfig, timerType = 'pomodoro') => {
     // Clear any existing interval
@@ -204,15 +207,8 @@ export const TimerProvider = ({ children }) => {
   useEffect(() => {
     if (isAuthorized) {
       loadPreferences();
-    } else {
-      setTimers(defaultTimers);
-      setSoundSettings(defaultSoundSettings);
-      setTheme(defaultTheme);
-      setDisplayGreeting(true);
-      resetCurrentTimer(defaultTimers);
-      document.documentElement.setAttribute('data-theme', defaultTheme);
     }
-  
+
     return () => {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
