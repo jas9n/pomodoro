@@ -11,16 +11,41 @@ function Form({ route, method }) {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [usernameError, setUsernameError] = useState('');
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
 
     const nameLabel = method === 'login' ? 'Log In' : 'Register';
+
+    // Check if the username exists
+    const checkUsernameExists = async () => {
+        if (username.trim() === '') return;
+
+        try {
+            const res = await api.get(`/api/user/check-username/`, {
+                params: { username },
+            });
+            if (res.data.exists) {
+                setUsernameError('Username already taken.');
+            } else {
+                setUsernameError('');
+            }
+        } catch (error) {
+            setUsernameError('Unable to validate username.');
+        }
+    };
 
     const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
         setErrorMessage('');
         setSuccessMessage('');
+
+        if (method === 'register' && usernameError) {
+            setErrorMessage('Please fix the errors before submitting.');
+            setLoading(false);
+            return;
+        }
 
         if (method === 'register' && password !== confirmPassword) {
             setErrorMessage('Passwords do not match.');
@@ -31,7 +56,7 @@ function Form({ route, method }) {
         try {
             const payload = { username, password };
             if (method === 'register' && name.trim() !== '') {
-                payload.name = name; // Add name only if it's not empty
+                payload.name = name;
             } else if (method === 'register' && name.trim() === '') {
                 setErrorMessage('Name is required.');
                 setLoading(false);
@@ -71,13 +96,16 @@ function Form({ route, method }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-[22rem] rounded-lg space-y-4 text-color p-12 shadow-md">
             <p className='text-3xl font-medium'>{nameLabel}</p>
-                <input
-                    className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Username"
-                />
+            <input
+                className={`block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid ${usernameError ? 'border-red-500' : 'border-color'} bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500`}
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                onBlur={method === 'register' ? checkUsernameExists : undefined}
+                placeholder="Username"
+            />
+            {usernameError && <p className="text-sm text-red-500">{usernameError}</p>}
+            
             {method === 'register' && (
                 <input
                     className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
@@ -126,7 +154,6 @@ function Form({ route, method }) {
                     <Link to="/login" className='text-sm text-blue-500'>Log in.</Link>
                 </div>
             )}
-
         </form>
     );
 }
