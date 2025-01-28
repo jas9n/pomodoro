@@ -50,7 +50,6 @@ api.interceptors.response.use(
 
         // Log other errors for debugging
         console.error('API Error:', error);
-        console.log(import.meta.env.VITE_API_URL);
 
         return Promise.reject(error);
     }
