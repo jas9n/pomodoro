@@ -54,6 +54,8 @@ export const TimerProvider = ({ children }) => {
   const loadPreferences = async () => {
     if (authLoading) return;
 
+    setLoading(true);
+
     if (!isAuthorized) {
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
@@ -64,9 +66,7 @@ export const TimerProvider = ({ children }) => {
       setLoading(false);
       return;
     }
-  
-    // setLoading(true);
-  
+
     try {
       const response = await api.get('/api/user/');
       const userPreferences = response.data.preferences;
@@ -97,7 +97,7 @@ export const TimerProvider = ({ children }) => {
       setClockFont(userPreferences?.clockFont ?? 'roboto');
 
     } catch (error) {
-      console.error('Failed to fetch preferences:', error);
+      console.error('Failed to :', error);
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
       setTheme(defaultTheme);
@@ -194,7 +194,6 @@ export const TimerProvider = ({ children }) => {
     const updatedTimers = { ...timers, ...newTimers };
     setTimers(updatedTimers);
     
-    // If the current timer type matches the updated timer, reset its time
     if (currentTimer.type === 'pomodoro' || 
         currentTimer.type === 'short-break' || 
         currentTimer.type === 'long-break') {
@@ -209,8 +208,9 @@ export const TimerProvider = ({ children }) => {
   useEffect(() => {
     if (isAuthorized) {
       loadPreferences();
-    } 
+    }
   
+
     return () => {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
