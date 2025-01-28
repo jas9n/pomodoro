@@ -21,13 +21,13 @@ function Form({ route, method }) {
         e.preventDefault();
         setErrorMessage('');
         setSuccessMessage('');
-
+    
         if (method === 'register' && password !== confirmPassword) {
             setErrorMessage('Passwords do not match.');
             setLoading(false);
             return;
         }
-
+    
         try {
             const payload = { username, password };
             if (method === 'register' && name.trim() !== '') {
@@ -37,9 +37,9 @@ function Form({ route, method }) {
                 setLoading(false);
                 return;
             }
-
+    
             const res = await api.post(route, payload);
-
+    
             if (res.status === 200 || res.status === 201) {
                 login(res.data.access, res.data.refresh); 
                 if (method === 'register') {
@@ -56,7 +56,12 @@ function Form({ route, method }) {
                 if (error.response.status === 401) {
                     setErrorMessage('Incorrect password or unregistered user.');
                 } else if (error.response.status === 400) {
-                    setErrorMessage('Missing field.');
+                    const responseErrors = error.response.data;
+                    if (responseErrors.username) {
+                        setErrorMessage(responseErrors.username[0]);
+                    } else {
+                        setErrorMessage('Missing field.');
+                    }
                 } else {
                     setErrorMessage('An unexpected error occurred. Please try again.');
                 }
