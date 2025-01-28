@@ -23,7 +23,6 @@ RUN set -ex && \
 COPY . /code
 
 ENV SECRET_KEY "0aa9E6xDhuNH0ZfxlVumKmcC4XXF2td4Ca4EstuFrpAmHQGd5O"
-RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
