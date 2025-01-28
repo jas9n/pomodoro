@@ -64,7 +64,9 @@ export const TimerProvider = ({ children }) => {
       setLoading(false);
       return;
     }
-    
+  
+    // setLoading(true);
+  
     try {
       const response = await api.get('/api/user/');
       const userPreferences = response.data.preferences;
@@ -207,8 +209,8 @@ export const TimerProvider = ({ children }) => {
   useEffect(() => {
     if (isAuthorized) {
       loadPreferences();
-    }
-
+    } 
+  
     return () => {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
