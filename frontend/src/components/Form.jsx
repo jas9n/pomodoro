@@ -30,8 +30,12 @@ function Form({ route, method }) {
 
         try {
             const payload = { username, password };
-            if (method === 'register') {
-                payload.name = name;
+            if (method === 'register' && name.trim() !== '') {
+                payload.name = name; // Add name only if it's not empty
+            } else if (method === 'register' && name.trim() === '') {
+                setErrorMessage('Name is required.');
+                setLoading(false);
+                return;
             }
 
             const res = await api.post(route, payload);
