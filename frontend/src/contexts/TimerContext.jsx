@@ -206,10 +206,7 @@ export const TimerProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isAuthorized) {
-      loadPreferences();
-    }
-  
+    loadPreferences();
 
     return () => {
       if (timerIntervalRef.current) {
