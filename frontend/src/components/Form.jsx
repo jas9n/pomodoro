@@ -41,11 +41,11 @@ function Form({ route, method }) {
             const res = await api.post(route, payload);
     
             if (res.status === 200 || res.status === 201) {
-                login(res.data.access, res.data.refresh); 
                 if (method === 'register') {
-                    setSuccessMessage('Registration successful.');
+                    setSuccessMessage('Registration successful. Please log in.');
                     setTimeout(() => navigate('/login'), 2000);
                 } else {
+                    login(res.data.access, res.data.refresh); 
                     navigate('/');
                 }
             } else {

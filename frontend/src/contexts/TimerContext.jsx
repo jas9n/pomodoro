@@ -54,8 +54,6 @@ export const TimerProvider = ({ children }) => {
   const loadPreferences = async () => {
     if (authLoading) return;
 
-    setLoading(true);
-
     if (!isAuthorized) {
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
@@ -66,6 +64,8 @@ export const TimerProvider = ({ children }) => {
       setLoading(false);
       return;
     }
+
+    setLoading(true);
 
     try {
       const response = await api.get('/api/user/');
@@ -97,7 +97,7 @@ export const TimerProvider = ({ children }) => {
       setClockFont(userPreferences?.clockFont ?? 'roboto');
 
     } catch (error) {
-      console.error('Failed to :', error);
+      console.error('Failed to fetch preferences:', error);
       setTimers(defaultTimers);
       setSoundSettings(defaultSoundSettings);
       setTheme(defaultTheme);
@@ -206,7 +206,9 @@ export const TimerProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    loadPreferences();
+    if (!authLoading) {
+      loadPreferences();
+    }
 
     return () => {
       if (timerIntervalRef.current) {
