@@ -41,7 +41,11 @@ function Stats() {
     }
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div className="flex justify-center item-center h-screen">
+                <p>Loading...</p>
+            </div>
+        );
     }
 
     return (

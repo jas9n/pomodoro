@@ -29,8 +29,7 @@ function Home() {
 
   if (authLoading || timerLoading) {
     return (
-      <div className="home">
-        <Navbar />
+      <div className="flex justify-center item-center h-screen">
         <p>Loading...</p>
       </div>
     );
