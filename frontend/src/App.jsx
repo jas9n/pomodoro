@@ -15,6 +15,10 @@ function Logout() {
   return <Navigate to="/" />;
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("loaded");
+});
+
 function AppContent() {
   return (
     <BrowserRouter>
