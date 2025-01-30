@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import api from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext'; 
+import LoadingIcon from '../assets/icons/loading.svg?react'
+
 
 function Form({ route, method }) {
     const [username, setUsername] = useState('');
@@ -109,11 +111,11 @@ function Form({ route, method }) {
                 />
             )}
             <button
-                className="w-full py-2.5 rounded-md bg-blue-500 text-white transition hover:bg-blue-400"
+                className="w-full py-2.5 rounded-md bg-blue-500 text-white flex justify-center items-center transition hover:bg-blue-400"
                 type="submit"
                 disabled={loading}
             >
-                {loading ? 'Loading...' : nameLabel}
+                {loading ? <LoadingIcon className="w-6 h-6 fill-white animate-spin" /> : nameLabel}
             </button>
     
             {errorMessage && <div className="fixed top-12 bg-red-100 text-red-800 px-4 py-2 rounded-md">{errorMessage}</div>}

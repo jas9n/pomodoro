@@ -45,7 +45,7 @@ function Stats() {
     if (loading) {
         return (
             <div className="bg-background flex justify-center item-center h-full">
-                <LoadingIcon className="w-12 h-12 fill-color animate-spin" />
+                <LoadingIcon className="w-12 h-12 fill-secondary animate-spin" />
             </div>
         );
     }
