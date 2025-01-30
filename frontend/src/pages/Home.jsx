@@ -31,7 +31,7 @@ function Home() {
   if (authLoading || timerLoading) {
     return (
       <div className="bg-background flex justify-center item-center h-full">
-        <LoadingIcon className="w-12 h-12 fill-secondary animate-spin" />
+        <LoadingIcon className="p-12 w-12 h-12 fill-secondary animate-spin" />
       </div>
     );
   }
