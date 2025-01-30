@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import Clock from '../components/Clock';
 import Navbar from '../components/Navbar';
+import LoadingIcon from '../assets/icons/loading.svg?react'
 import { AuthContext } from '../contexts/AuthContext';
 import { useTimer } from '../contexts/TimerContext';
 import api from '../api';
@@ -29,8 +30,8 @@ function Home() {
 
   if (authLoading || timerLoading) {
     return (
-      <div className="flex justify-center item-center h-screen">
-        <p>Loading...</p>
+      <div className="bg-background flex justify-center item-center h-full">
+        <LoadingIcon className="w-12 h-12 fill-color animate-spin" />
       </div>
     );
   }

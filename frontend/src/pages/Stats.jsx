@@ -5,6 +5,8 @@ import { AuthContext } from '../contexts/AuthContext';
 import api from '../api';
 import BackIcon from '../assets/icons/back.svg?react'
 import InfoIcon from '../assets/icons/info.svg?react'
+import LoadingIcon from '../assets/icons/loading.svg?react'
+
 
 
 
@@ -42,8 +44,8 @@ function Stats() {
 
     if (loading) {
         return (
-            <div className="flex justify-center item-center h-screen">
-                <p>Loading...</p>
+            <div className="bg-background flex justify-center item-center h-full">
+                <LoadingIcon className="w-12 h-12 fill-color animate-spin" />
             </div>
         );
     }

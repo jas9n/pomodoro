@@ -8,6 +8,8 @@ import api from '../api';
 import BackIcon from '../assets/icons/back.svg?react'
 import VolumeOnIcon from '../assets/icons/volume-on.svg?react'
 import VolumeOffIcon from '../assets/icons/volume-off.svg?react'
+import LoadingIcon from '../assets/icons/loading.svg?react'
+
 import alarmSound from '../assets/sounds/alarm.mp3';
 import chimeSound from '../assets/sounds/chime.mp3';
 import cuckoSound from '../assets/sounds/cuckoo.mp3';
@@ -192,8 +194,8 @@ function Settings() {
 
   if (loading) {
     return (
-      <div className="flex justify-center item-center h-screen">
-        <p>Loading...</p>
+      <div className="bg-background flex justify-center item-center h-full">
+        <LoadingIcon className="w-12 h-12 fill-color animate-spin" />
       </div>
     );
   }
