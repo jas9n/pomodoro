@@ -89,11 +89,11 @@ function Clock() {
     }, [currentTimer.time]);
 
     return (
-        <div className="flex flex-col items-center space-y-6 p-4 bg-background text-color">
+        <div className="flex flex-col items-center sm: space-y-6 p-4 bg-background text-color">
             {/* Timer Select */}
             <div className="flex space-x-4">
                 <button
-                    className={`px-4 py-2 rounded-full transition ${
+                    className={`px-3 sm:px-4 py-2 rounded-full transition text-sm sm:text-base ${
                         currentTimer.type === "pomodoro"
                             ? "bg-primary text-color"
                             : "bg-secondary text-tertiary"
@@ -103,7 +103,7 @@ function Clock() {
                     Pomodoro
                 </button>
                 <button
-                    className={`px-4 py-2 rounded-full transition ${
+                    className={`px-3 sm:px-4 py-2 rounded-full transition text-sm sm:text-base ${
                         currentTimer.type === "short-break"
                              ? "bg-primary text-color"
                             : "bg-secondary text-tertiary"
@@ -113,7 +113,7 @@ function Clock() {
                     Short Break
                 </button>
                 <button
-                    className={`px-4 py-2 rounded-full transition ${
+                    className={`px-3 sm:px-4 py-2 rounded-full transition text-sm sm:text-base ${
                         currentTimer.type === "long-break"
                              ? "bg-primary text-color"
                             : "bg-secondary text-tertiary"

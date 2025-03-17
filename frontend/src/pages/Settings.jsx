@@ -203,20 +203,20 @@ function Settings() {
   return (
     <div className="bg-background text-color flex flex-col justify-center items-center h-full">
       <Link title={"Close"} className="fixed top-6 right-6" to="/"><BackIcon className="fill-secondary w-8 h-8"/></Link>
-      <div className='p-16 shadow-md rounded-lg'>
+      <div className='p-8 sm:p-16 shadow-md rounded-lg w-[90%] max-w-[42rem] min-h-[20rem]'>
 
-      <div className="flex justify-between w-[32rem] h-[12rem]">
-        <div className="flex flex-col space-y-6 font-medium">
+      <div className="flex flex-col sm:flex-row sm:justify-between">
+        <div className="flex justify-center space-x-12 sm:pr-[3rem] sm:space-x-0 sm:flex-col sm:space-y-6 font-semibold">
           <p onClick={() => setActiveTab('timer')} className={`cursor-pointer ${activeTab === 'timer' ? 'underline' : ''}`}>Timers</p>
           <p onClick={() => setActiveTab('sound')} className={`cursor-pointer ${activeTab === 'sound' ? 'underline' : ''}`}>Sounds</p>
           
           <p onClick={() => setActiveTab('other')} className={`cursor-pointer ${activeTab === 'other' ? 'underline' : ''}`}>Other</p>
         </div>
-        <div className="flex justify-end item-center w-[24rem]">
+        <div className="flex justify-center sm:justify-end item-center w-full sm:max-w-[24rem] min-h-[18rem] sm:min-h-0">
           {activeTab === 'timer' && (
-            <div className="w-full flex justify-between items-center">
-              <div>
-                <label className='font-medium text-sm'>Pomodoro</label>
+            <div className="w-full flex flex-col justify-center items-center">
+              <div className='w-full flex justify-between items-center'>
+                <label className='font-medium'>Pomodoro</label>
                 <input
                   className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-secondary rounded-md border border-color appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
@@ -227,8 +227,8 @@ function Settings() {
                   placeholder="25"
                   />
               </div>
-              <div>
-                <label className='font-medium text-sm'>Short Break</label>
+              <div className='w-full flex justify-between items-center'>
+                <label className='font-medium'>Short Break</label>
                 <input
                   className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-secondary rounded-md border border-color appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
@@ -239,8 +239,8 @@ function Settings() {
                   placeholder="5"
                   />
               </div>
-              <div>
-                <label className='font-medium text-sm'>Long Break</label>
+              <div className='w-full flex justify-between items-center'>
+                <label className='font-medium'>Long Break</label>
                 <input  
                   className='block py-2.5 px-3 mt-2.5 w-24 text-sm bg-secondary rounded-md border border-color appearance-none focus:outline-none focus:ring-0 focus:border-blue-500'
                   type="text"
@@ -255,7 +255,7 @@ function Settings() {
           )}
           {activeTab === 'sound' && (
             <div className="w-full flex flex-col justify-center items-end space-y-4">
-       {/* Styled Select Dropdown */}
+
        <div className="w-full flex justify-between items-center">
          <label className="font-medium">Alarm Sound</label>
          <select 
@@ -271,13 +271,10 @@ function Settings() {
          </select>
        </div>
        
-       {/* Styled Volume Control */}
        <div className="w-full flex justify-between items-center ">
   <label className="font-medium">Volume</label>
-  <div className="flex items-center space-x-2">
-    {/* Mute/Unmute Button */}
+  <div className="flex items-center space-x-1 sm:space-x-2">
     <VolumeOffIcon className="fill-secondary w-4 h-4" />
-    {/* Styled Range Input */}
     <div className="relative w-full">
       <input
         type="range"
@@ -287,11 +284,10 @@ function Settings() {
         title={`${soundSettings.volume}%`}
         onChange={(e) => handleVolumeChange(e.target.value)}
         className={`
-          appearance-none w-full h-2 rounded-lg cursor-pointer bg-secondary
+          appearance-none w-[10rem] sm:w-full h-2 rounded-lg cursor-pointer bg-secondary
           accent-blue-500
           `}
           />
-      {/* Custom Thumb Styling */}
       <style>
         {`
           input[type="range"]::-webkit-slider-thumb {
@@ -358,9 +354,9 @@ function Settings() {
       </div>
       </div>
       { isAuthorized && (
-        <div className="flex mt-8 w-[32rem] justify-between">
-          <button onClick={handleRestoreDefault} className='px-4 py-2 text-red-500 border border-solid border-red-500 rounded-md hover:text-white hover:bg-red-500 transition'>Restore Default</button>
-          <button onClick={handleSave} className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 transition'>Save Changes</button>
+        <div className="flex mt-12 justify-between">
+          <button onClick={handleRestoreDefault} className='px-4 py-2 text-red-500 border border-solid border-red-500 rounded-md hover:text-white hover:bg-red-500 transition text-sm sm:text-base'>Restore Default</button>
+          <button onClick={handleSave} className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 transition text-sm sm:text-base'>Save Changes</button>
         </div>
       )}
       </div>

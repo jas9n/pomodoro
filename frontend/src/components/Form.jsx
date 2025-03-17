@@ -76,7 +76,7 @@ function Form({ route, method }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-[22rem] rounded-lg space-y-4 text-color p-12 shadow-md">
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-[90%] max-w-[22.5rem] rounded-lg space-y-4 text-color p-12 shadow-md">
             <p className='text-3xl font-medium'>{nameLabel}</p>
                 <input
                     className="block py-2.5 px-3 mt-2.5 w-full text-sm bg-transparent rounded-md border border-solid border-color bg-secondary appearance-none focus:outline-none focus:ring-0 focus:border-blue-500"
@@ -122,13 +122,13 @@ function Form({ route, method }) {
             {successMessage && <div className="fixed top-12 bg-green-100 text-green-800 px-4 py-2 rounded-md">{successMessage}</div>}
 
             {method === 'login' && (
-                <div className="flex space-x-1.5">
+                <div className="flex flex-col sm:flex-row text-center space-x-1.5">
                     <p className='text-sm'>Don't have an account?</p>
                     <Link to="/register" className='text-sm text-blue-500'>Register here.</Link>
                 </div>
             )}
             {method === 'register' && (
-                <div className="flex space-x-1.5">
+                <div className="flex flex-col sm:flex-row text-center space-x-1.5">
                     <p className='text-sm'>Already have an account?</p>
                     <Link to="/login" className='text-sm text-blue-500'>Log in.</Link>
                 </div>
